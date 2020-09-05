@@ -1,0 +1,39 @@
+<% if session[:booking_dates] && session[:booking_dates]&.length > 0 %>
+
+
+  <table role="table" class="table">
+    <thead role="rowgroup">
+      <tr role="row">
+        <th role="columnheader">Date</th>
+        <th role="columnheader">Rate</th>
+            <th role="columnheader">No of Devotee</th>
+  <th role="columnheader">Amount</th>
+    <th role="columnheader">Remove</th>
+      </tr>
+    </thead>
+
+    <tbody role="rowgroup">
+      <% sum=0%>
+      <%session[:booking_dates].each do |date|%>
+<tr role="row">
+ <td role="cell" > <%=date%></td>
+  <td role="cell" > <%=@seva.rate%></td>
+    <td role="cell" > <%=@count%></td>
+   <td role="cell" > <%=amt= @seva.rate*@count %></td>
+   <% sum+=amt%>
+    <td role="cell" > <%= link_to ('<span class="glyphicon glyphicon-trash"> </span>').html_safe, remove_booked_date_path(:date => date,:seva_id=>@seva.id,:count=>@count), :method=> :post, :remote=> true%></td>
+</tr>
+<% end%>
+<tr role="row">
+ <td role="cell" colspan="3" >Total: </td>
+ <td role="cell" colspan="2" > <%=sum%></td>
+
+</tr>
+
+
+    </tbody>
+  </table>
+
+
+
+<% end %>

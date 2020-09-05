@@ -1,0 +1,62 @@
+<%= form_with(model: exception_date, local: true) do |form| %>
+  <% if exception_date.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(exception_date.errors.count, "error") %> prohibited this exception_date from being saved:</h2>
+
+      <ul>
+        <% exception_date.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+  <div class="field" id="select_special_day"  >
+
+      <div class="container1">
+        <%if form.object&.dates && form.object&.dates&.length > 0 %>
+        <%form.object&.dates&.each do |day| %>
+
+        <div><input type="date" name="exception_date[dates][]", value="<%=day%>"><a href="#" class="delete">Delete</a></div>
+
+              <%end%>
+               <% else %>
+                 <div><input type="date" name="exception_date[dates][]"></div>
+
+        <%end%>
+
+
+
+    </div>
+      <button class="add_form_field">Add New Date &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+<script>  var wrapper3         = $(".container1");
+  var add_button3      = $(".add_form_field");
+
+
+  $(add_button3).click(function(e){
+      e.preventDefault();
+      // if(x < max_fields){
+          // x++;
+          $(wrapper3).append('<div><input type="date" name="exception_date[dates][]"/><a href="#" class="delete">Delete</a></div>'); //add input box
+      // }
+  // else
+  // {
+  // alert('You Reached the limits')
+  // }
+  });
+
+  $(wrapper3).on("click",".delete", function(e){
+      e.preventDefault(); $(this).parent('div').remove(); x--;
+  })
+</script>

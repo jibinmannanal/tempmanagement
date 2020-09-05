@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @family_member.name %>
+</p>
+
+<p>
+  <strong>Nakshatra:</strong>
+  <%= @family_member.nakshatra %>
+</p>
+
+<p>
+  <strong>Dob:</strong>
+  <%= @family_member.dob %>
+</p>
+
+<%= link_to 'Edit', edit_family_member_path(@family_member) %> |
+<%= link_to 'Back', family_members_path %>

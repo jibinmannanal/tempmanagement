@@ -1,0 +1,44 @@
+<%= form_with(model: family_member, local: true) do |form| %>
+  <% if family_member.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(family_member.errors.count, "error") %> prohibited this family_member from being saved:</h2>
+
+      <ul>
+        <% family_member.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name,class: "form-control" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :nakshatra %>
+    <%= form.select(:nakshatra, options_for_select(["Ashwini","Bharani","Krutika","Rohini","Mrigashira","Aridra","Punarvasu","Pushya","Ashlesha","Makha","Pubba","Uttara","Hasta","Chitta","Swati","Vishakha","Anuradha","Jyeshta","Moola","Purvashada","Uttarashada","Shravana",
+    "Dhanista","Shatabhisha","Poorvabadra","Uttarabadra","Revati"]), {}, {class: "form-control"}) %>
+
+
+</div>
+  <!-- <div class="field">
+    <%= form.label :dob %>
+    <%= form.datetime_select :dob, data:{ provide:'datepicker' }  %>
+  </div> -->
+    <div class="field">
+  <%= form.label :gotra %><br />
+
+  <%= form.select(:gotra,   options_for_select(Gotra.all.collect{ |u| [u.name, u.name] }), {}, {class: "form-control"}) %>
+
+
+
+</div>
+              <%= form.label :rashi %><br />
+                <%= form.text_field :rashi, class: "form-control" %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

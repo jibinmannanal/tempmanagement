@@ -1,0 +1,31 @@
+<% provide(:title, @user.name) %>
+<div class="row">
+  <aside class="col-md-12">
+
+    <table style="width: 100%">
+      <thead>
+        <tr>
+          <th>Name</th>
+            <th>Email</th>
+          <th>Nakshatra</th>
+          <th>Gotra</th>
+          <th>Rashi</th>
+
+
+        </tr>
+      </thead>
+
+      <tbody>
+        <td>  <%= @user.name %></td>
+        <td>  <%= @user.email %></td>
+        <td><%= @user.nakshatra %></td>
+        <td><%= @user.gotra %></td>
+        <td><%= @user.rashi %></td>
+
+
+    </tbody>
+    </table>
+
+
+
+</div>

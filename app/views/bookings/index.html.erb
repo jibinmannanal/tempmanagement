@@ -1,0 +1,69 @@
+<section class="container">
+<p id="notice"><%= notice %></p>
+
+<h1>Bookings</h1>
+no,name,gotra,nakshtra,seva name ,no of persons if applicabile, amount ,
+<table role="table" class="table">
+  <thead role="rowgroup">
+    <tr role="row">
+      <th role="columnheader">Recepit Number</th>
+        <th role="columnheader">Devotee Name</th>
+            <th role="columnheader">Devotee Gotra</th>
+              <th role="columnheader">Devotee Nakshatra</th>
+      <th role="columnheader">Seva Name</th>
+
+
+
+
+      <th role="columnheader">Seva Dates</th>
+      <th role="columnheader">Seva Type</th>
+      <th role="columnheader">Rate</th>
+          <th role="columnheader">No. of Devotees</th>
+
+      <th role="columnheader">Amount</th>
+
+  <th role="columnheader">Print</th>
+    </tr>
+  </thead>
+  <tbody role="rowgroup">
+<% @bookings.each do |booking| %>
+<tr role="row">
+    <td role="cell" data-title="No"><%= booking.id%></td>
+
+<%name=[]%>
+<%nakshatra=[]%>
+<%gotra=[]%>
+   <%booking.devote_list.each do |devotee| %>
+
+<%name << devotee["name"]%>
+
+<%nakshatra << devotee["nakshatra"]%>
+<%gotra << devotee["gotra"]%>
+
+  <%end%>
+  <td role="cell" data-title="Devotee Name"><% name.each do |na|%>
+  <p><%=na%></p>
+  <%end%>
+</td>
+  <td role="cell" data-title="Devotee Gotra"><% gotra.each do |na|%>
+    <p><%=na%></p>
+    <%end%></td>
+  <td role="cell" data-title="Devotee Nakshatra"><% nakshatra.each do |na|%>
+    <p><%=na%></p>
+    <%end%></td>
+ <td role="cell" data-title="Seva"><%= booking.seva.name%></td>
+ <td role="cell" data-title="Dates"><%= booking.seva_date.to_sentence %></td>
+
+ <td role="cell" data-title="Timing"><%=booking.booking_type%></td>
+ <td role="cell" data-title="Rate"><%=booking.seva.rate%></td>
+  <td role="cell" data-title="count"><%=booking.devote_list.length%></td>
+ <td role="cell" data-title="Username"><%= booking.rate %></td>
+<td role="cell" ><%= link_to 'Print',booking_path(booking, :format => 'pdf'),  target: :_blank%></td>
+</tr>
+<%end%>
+  </tbody>
+</table>
+</table>
+
+<br>
+</section>

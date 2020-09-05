@@ -1,0 +1,29 @@
+<%= form_with(model: seva_type, local: true) do |form| %>
+  <% if seva_type.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(seva_type.errors.count, "error") %> prohibited this seva_type from being saved:</h2>
+
+      <ul>
+        <% seva_type.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+  <div class="field">
+      <%= form.label "Group Booking" %>
+      <%= form.check_box :group_booking %>
+  </div>
+  <div class="field">
+      <%= form.label "Maximum Number Allowed Per Booking" %>
+      <%= form.number_field :maximum_number_per_booking %>
+  </div>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Exception Dates</h1>
+
+<table style="width:100%">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Dates</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @exception_dates.each do |exception_date| %>
+      <tr>
+        <td><%= exception_date.name %></td>
+        <td><%= exception_date.dates.to_sentence %></td>
+      
+        <td><%= link_to 'Edit', edit_exception_date_path(exception_date) %></td>
+        <td><%= link_to 'Destroy', exception_date, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Exception Date', new_exception_date_path %>

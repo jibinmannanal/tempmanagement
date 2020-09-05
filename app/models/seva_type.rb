@@ -1,0 +1,2 @@
+class SevaType < ApplicationRecord
+end

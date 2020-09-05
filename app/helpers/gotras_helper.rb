@@ -1,0 +1,2 @@
+module GotrasHelper
+end

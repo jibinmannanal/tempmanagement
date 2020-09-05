@@ -1,0 +1,71 @@
+
+
+  <table style="width:100%">
+    <thead>
+      <tr>
+        <th>Seva Name</th>
+        <th>Count</th>
+
+          <!-- <th>Devotee Count</th>
+          <th>Amount</th> -->
+      </tr>
+    </thead>
+
+    <tbody>
+  <%@datas.each do |key, value| %>
+
+
+        <tr>
+          <td><%= value[0].seva.name %></td>
+          <td><%= value.count%></td>
+              </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <hr>
+  <table style="width:100%">
+    <thead>
+      <tr>
+        <th>Recepit No</th>
+          <th> gotra</th>
+        <!-- <th>Seva Name</th> -->
+        <!-- <th>Rate</th> -->
+
+
+            <th> nakshatra</th>
+              <th>Devotee name</th>
+
+            <th>Total Amount</th>
+      </tr>
+    </thead>
+
+    <tbody>
+  <%@datas.each do |key, value| %>
+<tr ><td colspan="5"><h2><%= value[0].seva.name%></h2></td></tr>
+  <% value.each do |data| %>
+        <tr>
+          <td><%= data.id %></td>
+          <td><% data.devote_list.pluck("gotra")&.each do |name| %>
+            <p> <%=name%></p>
+          <%end%>
+          </td>
+          <td><% data.devote_list.pluck("nakshatra")&.each do |nakshatra| %>
+            <p> <%=nakshatra%></p>
+          <%end%>
+          </td>
+          <td><% data.devote_list.pluck("name")&.each do |name| %>
+            <p> <%=name%></p>
+  <%end%>
+          </td>
+
+
+          <td><%=data.rate%>
+
+          </td>
+
+              </tr>
+                <%end%>
+      <% end %>
+    </tbody>
+  </table>

@@ -1,0 +1,239 @@
+// Place all the styles related to the Sevas controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+//=== Tags
+$enable-flex: true;
+$tags-color: #fff;
+$primary-color: #317CAF;
+$marked-color: lighten($primary-color, 20%);
+$exist-color: #EDB5A1;
+$container-border: 1px solid #ccc;
+$container-bg: transparent;
+$container-line-height: 1.6;
+$container-font-size: 14px;
+$container-radius: 1px;
+$container-min-height: 34px;
+$container-padding: 2px 5px;
+$tags-marging: 2px 6px 2px 0;
+$tags-padding: 1px 20px 1px 8px;
+$tags-weight: 400;
+$tags-radius: 3px;
+$btn-outline-color: #fff;
+$spacer: 15px;
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+.tags-container {
+
+  @if($enable-flex) {
+    display: flex;
+    flex-flow: row wrap;
+  }
+
+  margin-bottom: $spacer;
+  width: 100%;
+  min-height: $container-min-height;
+  padding: $container-padding;
+  font-size: $container-font-size;
+  line-height: $container-line-height;
+  background-color: $container-bg;
+  border: $container-border;
+  border-radius: $container-radius;
+  overflow: hidden;
+  word-wrap: break-word;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+input.tag-input {
+  @if ($enable-flex) {
+    flex: 3;
+  }
+  @else {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  border: 0;
+  outline: 0;
+}
+.tag {
+  @if ($enable-flex == false) {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  position: relative;
+  margin: $tags-marging;
+  padding: $tags-padding;
+  font-size: inherit;
+  font-weight: $tags-weight;
+  text-align: center;
+  color: $tags-color;
+  background-color: $primary-color;
+  border-radius: $tags-radius;
+  transition: background-color .3s ease;
+  cursor: default;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &--marked {
+    background-color: $marked-color;
+  }
+
+  &--exists {
+    background-color: $exist-color;
+    animation: shake 1s linear;
+  }
+
+  &__name {
+    margin-right: 3px;
+  }
+
+ }
+.tag__remove {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 20px;
+  height: 100%;
+  padding: 0 5px;
+  font-size: 16px;
+  font-weight: 400;
+  transition: opacity .3s ease;
+  opacity: .5;
+  cursor: pointer;
+  border: 0;
+  background-color: transparent;
+  color: #fff;
+  line-height: 1;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:focus {
+    outline: 5px auto $btn-outline-color;
+  }
+}
+
+.text-left {
+    text-align: left !important;
+}
+ @keyframes shake {
+   0%, 100% {
+     transform: translate3d(0, 0, 0);
+   }
+   10%, 30%, 50%, 70%, 90% {
+     transform: translate3d(-5px, 0, 0);
+   }
+   20%, 40%, 60%, 80% {
+     transform: translate3d(5px, 0, 0);
+   }
+ }
+
+
+
+
+
+
+ .tags {
+  list-style: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.tags li {
+  float: left;
+}
+//
+.tag {
+  background: #eee;
+  border-radius: 3px 0 0 3px;
+  color: #999;
+  display: inline-block;
+  height: 26px;
+  line-height: 26px;
+  padding: 0 20px 0 23px;
+  position: relative;
+  margin: 0 10px 10px 0;
+  text-decoration: none;
+  -webkit-transition: color 0.2s;
+}
+//
+// .tag::before {
+//   background: #fff;
+//   border-radius: 10px;
+//   box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+//   content: '';
+//   height: 6px;
+//   left: 10px;
+//   position: absolute;
+//   width: 6px;
+//   top: 10px;
+// }
+//
+.tag::after {
+  background: #fff;
+  border-bottom: 13px solid transparent;
+  border-left: 10px solid #eee;
+  border-top: 13px solid transparent;
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.tag:hover {
+  background-color: crimson;
+  color: white;
+}
+
+.tag:hover::after {
+   border-left-color: crimson;
+}
+
+.container1 input[type=text] {
+padding:5px 0px;
+margin:5px 5px 5px 0px;
+}
+
+
+.add_form_field
+{
+    background-color: #1c97f3;
+    border: none;
+    color: white;
+    padding: 8px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+	border:1px solid #186dad;
+
+}
+
+input{
+    border: 1px solid #1c97f3;
+    // width: 260px;
+    // height: 40px;
+	margin-bottom:14px;
+}
+
+.delete{
+    background-color: #fd1200;
+    border: none;
+    color: white;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+
+}

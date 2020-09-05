@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @seva.name %>
+</p>
+
+<p>
+  <strong>Instructions:</strong>
+  <%= @seva.instructions %>
+</p>
+
+<p>
+  <strong>Rate:</strong>
+  <%= @seva.rate %>
+</p>
+
+<p>
+  <strong>Identification number:</strong>
+  <%= @seva.identification_number %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @seva.status %>
+</p>
+
+<p>
+  <strong>Audit logs:</strong>
+  <%= @seva.audit_logs %>
+</p>
+
+<%= link_to 'Edit', edit_seva_path(@seva) %> |
+<%= link_to 'Back', sevas_path %>

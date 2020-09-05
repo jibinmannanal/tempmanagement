@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @exception_date.name %>
+</p>
+
+<p>
+  <strong>Dates:</strong>
+  <%= @exception_date.dates %>
+</p>
+
+<%= link_to 'Edit', edit_exception_date_path(@exception_date) %> |
+<%= link_to 'Back', exception_dates_path %>

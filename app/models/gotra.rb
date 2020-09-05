@@ -1,0 +1,2 @@
+class Gotra < ApplicationRecord
+end

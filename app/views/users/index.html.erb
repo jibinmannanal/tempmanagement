@@ -1,0 +1,24 @@
+<% provide(:title, 'All users') %>
+<h1>All users</h1>
+
+<%= will_paginate %>
+
+
+<table style="width: 100%">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Nakshatra</th>
+      <th>Gotra</th>
+      <th>Roles</th>
+      <th>Edit</th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+  <%= render @users %>
+
+</tbody>
+</table>
+<%= will_paginate %>

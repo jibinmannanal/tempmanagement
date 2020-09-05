@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @event_type.type %>
+</p>
+
+<p>
+  <strong>Exception date:</strong>
+  <%= @event_type.exception_date %>
+</p>
+
+<p>
+  <strong>Occurrence :</strong>
+  <%= @event_type.occurrence_date %>
+</p>
+
+<%= link_to 'Edit', edit_event_type_path(@event_type) %> |
+<%= link_to 'Back', event_types_path %>

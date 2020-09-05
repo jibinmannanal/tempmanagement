@@ -1,0 +1,585 @@
+<%= form_with(model: seva, local: true) do |form| %>
+<% if seva.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(seva.errors.count, "error") %> prohibited this seva from being saved:</h2>
+
+  <ul>
+    <% seva.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+<div class="container-fluid">
+  <div class="row">
+
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="field">
+  <%= form.label :name %>
+  <%= form.text_field :name %>
+</div>
+</div>
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="field">
+  <%= form.label :instructions %>
+  <%= form.rich_text_area :instructions %>
+</div>
+</div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="field">
+  <%= form.label :rate %>
+  <%= form.text_field :rate %>
+</div>
+</div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="field">
+
+  <%= form.label :seva_type %>
+  <%= form.select(:seva_type_id, SevaType.all.collect{ |u| [u.name, u.id] },:selected => form.object.seva_type_id) %>
+</div>
+</div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="field">
+  <%= form.label :timing %>
+  <%= form.text_field :timing,id:"exist-values" ,class:"tagged form-control" ,'data-removeBtn':"true", placeholder:"Add Seve Times" %>
+</div>
+</div>
+<!-- <div class="field">
+<%= form.label :identification_number %>
+<%= form.text_field :identification_number %>
+</div> -->
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="field">
+  <%= form.label :status %>
+
+  <%= form.select :status ,["active","inactive"]%>
+</div>
+</div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="field">
+  <%= form.label :event_type %>
+
+  <%= form.select :event_type ,["regular","specific_day","every_week_on","every_month_specific_day"]%>
+</div>
+</div>
+
+<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+<div class="field">
+  <%= form.label :exception_dates %>
+  <!-- options_for_select(ExceptionDate.all.collect{|x| [x.name,x.id]}), {:multiple => true} -->
+
+  <%= form.select(:exception_date_ids, ExceptionDate.all.collect {|p| [ p.name, p.id ] },
+
+    {:include_blank => true},
+    { :multiple => true, :size => 5 }) %>
+  </div>
+    </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+      <div class="field">
+        <%= form.label :no_of_persons %>
+    <%if form.object&.additional_data && form.object&.additional_data['allowed_person_per_booking'] %>
+    <div><input type="number" name="seva[additional_data][allowed_person_per_booking]", value="<%=form.object&.additional_data['allowed_person_per_booking']%>"></div>
+    <%else%>
+
+    <input type="number" name="seva[additional_data][allowed_person_per_booking]", value="1">
+    <%end%>
+    </div>
+      </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="field" id="select_day_in_week" style="display: <%= form.object.event_type == 'every_week_on' ?  'block' : 'none' %>">
+
+<%  ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].each do |day| %>
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+<%= form.check_box "[additional_data][every_week_on]", { multiple: true ,checked: form.object.additional_data && form.object&.additional_data['every_week_on']&.include?(day) ? true : false}, day%>
+<%= form.label day%>
+</div>
+<% end %>
+</div>
+</div>
+
+<div class="field" id="select_special_day"  style="display: <%= form.object.event_type == 'specific_day' ?  'block' : 'none' %>">
+
+  <div class="container1">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+    <%if form.object&.additional_data && form.object&.additional_data['specificDate'] %>
+    <%form.object&.additional_data['specificDate']&.each do |date| %>
+
+    <div><input type="date" name="seva[additional_data][specificDate][]", value="<%=date%>"><a href="#" class="delete">Delete</a></div>
+
+          <%end%>
+           <% else %>
+           <div><input type="date" name="seva[additional_data][specificDate][]"></div>
+
+    <%end%>
+
+  </div>
+
+</div>
+<button class="add_form_field">Add New Date &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+
+</div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="field" id="select_everymonth_specific_day"  style="display: <%= form.object.event_type == 'every_month_specific_day' ?  'block' : 'none' %>">
+
+  <div class="container2">
+  <%if form.object&.additional_data && form.object&.additional_data['specific_day'] %>
+  <%form.object&.additional_data['specific_day']&.each do |day| %>
+
+  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><input type="number" name="seva[additional_data][specific_day][]", value="<%=day%>"><a href="#" class="delete">Delete</a></div>
+
+        <%end%>
+         <% else %>
+          <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><input type="number" name="seva[additional_data][specific_day][]"></div>
+  <%end%>
+
+
+  </div>
+  <button class="add_form_field" id="add_form2">Add New Day &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+  <!-- <%= form.label :everymonth_specific_day %>
+  <%= form.text_field :specific_day,id:"exist-valuesrrrr" ,class:"tagged form-control1" ,'data-removeBtn':"true", placeholder:"Add Seve Times" %> -->
+</div>
+</div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+<div class="field"  id="select_repeating_interval"  style="display: <%= form.object.event_type == 'repeating_interval' ?  'block' : 'none' %>">
+  <div><label>Start Date</label>
+    <input type="date" name="seva[additional_data][startDate]" value="<%= form.object&.additional_data ? form.object&.additional_data['startDate'] : ''%>"></div>
+
+    <div class="container3">
+    <%if form.object&.additional_data && form.object&.additional_data['repeating_interval']&.length > 0 %>
+    <%form.object&.additional_data['repeating_interval']&.each do |day| %>
+
+    <div><input type="number" name="seva[additional_data][repeating_interval][]", value="<%=day%>"><a href="#" class="delete">Delete</a></div>
+
+          <%end%>
+           <% else %>
+           <div><input type="number" name="seva[additional_data][repeating_interval][]"></div>
+
+    <%end%>
+          </div>
+    <button class="add_form_field" id="add_form3">Add Another Interval &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+    <!-- <%= form.label :repeating_interval %>
+    <%= form.text_field :repeating_interval,id:"ww" ,'data-role':"tagsinput", placeholder:"Add Seve Times" %> -->
+  </div>
+    </div>
+
+    <div class="actions">
+      <%= form.submit class: "btn btn-primary" %>
+    </div>
+    <% end %>
+    <script type="text/javascript">
+
+    $('#seva_event_type').change(function(){
+
+      if (this.value == 'regular')
+      {
+        $('#select_day_in_week').css("display", "none");
+        $('#select_special_day').css("display", "none");
+        $('#select_everymonth_specific_day').css("display", "none");
+        $('#select_repeating_interval').css("display", "none");
+        // $('#personal_info_wedding_date').val('');
+        // $('#personal_info_spouse_name').val('');
+
+      }
+      else if (this.value == 'specific_day')
+      {
+        $('#select_day_in_week').css("display", "none");
+        $('#select_special_day').css("display", "block");
+        $('#select_everymonth_specific_day').css("display", "none");
+        $('#select_repeating_interval').css("display", "none");
+      }
+      else if (this.value == 'every_week_on')
+      {
+        $('#select_day_in_week').css("display", "block");
+        $('#select_special_day').css("display", "none");
+        $('#select_everymonth_specific_day').css("display", "none");
+        $('#select_repeating_interval').css("display", "none");
+      }
+      else if (this.value == 'every_month_specific_day')
+      {
+        $('#select_day_in_week').css("display", "none");
+        $('#select_special_day').css("display", "none");
+        $('#select_everymonth_specific_day').css("display", "block");
+        $('#select_repeating_interval').css("display", "none");
+      }
+      else if (this.value == 'repeating_interval')
+      {
+        $('#select_day_in_week').css("display", "none");
+        $('#select_special_day').css("display", "none");
+        $('#select_everymonth_specific_day').css("display", "none");
+        $('#select_repeating_interval').css("display", "block");
+      }
+
+    });
+
+    (function() {
+
+      'use strict';
+
+      // Helpers
+      function $$(selectors, context) {
+        return (typeof selectors === 'string') ? (context || document).querySelectorAll(selectors) : [selectors];
+      }
+      function $(selector, context) {
+        return (typeof selector === 'string') ? (context || document).querySelector(selector) : selector;
+      }
+      function create(tag, attr) {
+        var element = document.createElement(tag);
+        if(attr) {
+          for(var name in attr) {
+            if(element[name] !== undefined) {
+              element[name] = attr[name];
+            }
+          }
+        }
+        return element;
+      }
+      function whichTransitionEnd() {
+        var root = document.documentElement;
+        var transitions = {
+          'transition'       : 'transitionend',
+          'WebkitTransition' : 'webkitTransitionEnd',
+          'MozTransition'    : 'mozTransitionEnd',
+          'OTransition'      : 'oTransitionEnd otransitionend'
+        };
+
+        for(var t in transitions){
+          if(root.style[t] !== undefined){
+            return transitions[t];
+          }
+        }
+        return false;
+      }
+      function oneListener(el, type, fn, capture) {
+        capture = capture || false;
+        el.addEventListener(type, function handler(e) {
+          fn.call(this, e);
+          el.removeEventListener(e.type, handler, capture)
+        }, capture);
+      }
+      function hasClass(cls, el) {
+        return new RegExp('(^|\\s+)' + cls + '(\\s+|$)').test(el.className);
+      }
+      function addClass(cls, el) {
+        if( ! hasClass(cls, el) )
+        return el.className += (el.className === '') ? cls : ' ' + cls;
+      }
+      function removeClass(cls, el) {
+        el.className = el.className.replace(new RegExp('(^|\\s+)' + cls + '(\\s+|$)'), '');
+      }
+      function toggleClass(cls, el) {
+        ( ! hasClass(cls, el)) ? addClass(cls, el) : removeClass(cls, el);
+      }
+
+      function Tags(tag) {
+
+        var el = $(tag);
+
+        if(el.instance) return;
+        el.instance = this;
+
+        var type = el.type;
+        var transitionEnd = whichTransitionEnd();
+
+        var tagsArray = [];
+        var KEYS = {
+          ENTER: 13,
+          COMMA: 188,
+          BACK: 8
+        };
+        var isPressed = false;
+
+        var timer;
+        var wrap;
+        var field;
+
+        function init() {
+
+          // create and add wrapper
+          wrap = create('div', {
+            'className': 'tags-container',
+          });
+          field = create('input', {
+            'type': 'number',
+            'className': 'tag-input',
+            'placeholder': el.placeholder || ''
+          });
+
+          wrap.appendChild(field);
+
+          if(el.value.trim() !== '') {
+            hasTags();
+          }
+
+          el.type = 'hidden';
+          el.parentNode.insertBefore(wrap, el.nextSibling);
+
+          wrap.addEventListener('click', btnRemove, false);
+          wrap.addEventListener('keydown', keyHandler, false);
+          wrap.addEventListener('keyup', backHandler, false);
+        }
+
+        function hasTags() {
+          var arr = el.value.trim().split(',');
+          arr.forEach(function(item) {
+            item = item.trim();
+            if(~tagsArray.indexOf(item)) {
+              return;
+            }
+            var tag = createTag(item);
+            tagsArray.push(item);
+            wrap.insertBefore(tag, field);
+          });
+        }
+
+        function createTag(name) {
+          var tag = create('div', {
+            'className': 'tag',
+            'innerHTML': '<span class="tag__name">' + name + '</span>'+
+            '<button class="tag__remove">&times;</button>'
+          });
+          //       var tagName = create('span', {
+          //         'className': 'tag__name',
+          //         'textContent': name
+          //       });
+          //       var delBtn = create('button', {
+          //         'className': 'tag__remove',
+          //         'innerHTML': '&times;'
+          //       });
+
+          //       tag.appendChild(tagName);
+          //       tag.appendChild(delBtn);
+          return tag;
+        }
+
+        function btnRemove(e) {
+          e.preventDefault();
+          if(e.target.className === 'tag__remove') {
+            var tag  = e.target.parentNode;
+            var name = $('.tag__name', tag);
+            wrap.removeChild(tag);
+            tagsArray.splice(tagsArray.indexOf(name.textContent), 1);
+            el.value = tagsArray.join(',')
+          }
+          field.focus();
+        }
+
+        function keyHandler(e) {
+
+          if(e.target.tagName === 'INPUT' && e.target.className === 'tag-input') {
+
+            var target = e.target;
+            var code = e.which || e.keyCode;
+
+            if(field.previousSibling && code !== KEYS.BACK) {
+              removeClass('tag--marked', field.previousSibling);
+            }
+
+            var name = target.value.trim();
+
+            // if(code === KEYS.ENTER || code === KEYS.COMMA) {
+            if(code === KEYS.ENTER) {
+
+              target.blur();
+
+              addTag(name);
+
+              if(timer) clearTimeout(timer);
+              timer = setTimeout(function() { target.focus(); }, 10 );
+            }
+            else if(code === KEYS.BACK) {
+              if(e.target.value === '' && !isPressed) {
+                isPressed = true;
+                removeTag();
+              }
+            }
+          }
+        }
+        function backHandler(e) {
+          isPressed = false;
+        }
+
+        function addTag(name) {
+
+          // delete comma if comma exists
+          name = name.toString().replace(/,/g, '').trim();
+
+          if(name === '') return field.value = '';
+
+          if(~tagsArray.indexOf(name)) {
+
+            var exist = $$('.tag', wrap);
+
+            Array.prototype.forEach.call(exist, function(tag) {
+              if(tag.firstChild.textContent === name) {
+
+                addClass('tag--exists', tag);
+
+                if(transitionEnd) {
+                  oneListener(tag, transitionEnd, function() {
+                    removeClass('tag--exists', tag);
+                  });
+                } else {
+                  removeClass('tag--exists', tag);
+                }
+
+
+              }
+
+            });
+
+            return field.value = '';
+          }
+
+          var tag = createTag(name);
+          wrap.insertBefore(tag, field);
+          tagsArray.push(name);
+          field.value = '';
+          el.value += (el.value === '') ? name : ',' + name;
+        }
+
+        function removeTag() {
+          if(tagsArray.length === 0) return;
+
+          var tags = $$('.tag', wrap);
+          var tag = tags[tags.length - 1];
+
+          if( ! hasClass('tag--marked', tag) ) {
+            addClass('tag--marked', tag);
+            return;
+          }
+
+          tagsArray.pop();
+
+          wrap.removeChild(tag);
+
+          el.value = tagsArray.join(',');
+        }
+
+        init();
+
+        /* Public API */
+
+        this.getTags = function() {
+          return tagsArray;
+        }
+
+        this.clearTags = function() {
+          if(!el.instance) return;
+          tagsArray.length = 0;
+          el.value = '';
+          wrap.innerHTML = '';
+          wrap.appendChild(field);
+        }
+
+        this.addTags = function(name) {
+          if(!el.instance) return;
+          if(Array.isArray(name)) {
+            for(var i = 0, len = name.length; i < len; i++) {
+              addTag(name[i])
+            }
+          } else {
+            addTag(name);
+          }
+          return tagsArray;
+        }
+
+        this.destroy = function() {
+          if(!el.instance) return;
+
+          wrap.removeEventListener('click', btnRemove, false);
+          wrap.removeEventListener('keydown', keyHandler, false);
+          wrap.removeEventListener('keyup', keyHandler, false);
+
+          wrap.parentNode.removeChild(wrap);
+
+          tagsArray = null;
+          timer = null;
+          wrap = null;
+          field = null;
+          transitionEnd = null;
+
+          delete el.instance;
+          el.type = type;
+        }
+      }
+
+      window.Tags = Tags;
+
+    })();
+
+
+
+
+
+
+    // Use
+    var tags = new Tags('.tagged');
+
+    // var max_fields      = 10;
+    var wrapper3         = $(".container1");
+    var add_button3      = $(".add_form_field");
+
+
+    $(add_button3).click(function(e){
+      e.preventDefault();
+      // if(x < max_fields){
+      // x++;
+      $(wrapper3).append('<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><input type="date" name="seva[additional_data][specificDate][]"/><a href="#" class="delete">Delete</a></div>'); //add input box
+      // }
+      // else
+      // {
+      // alert('You Reached the limits')
+      // }
+    });
+
+    $(wrapper3).on("click",".delete", function(e){
+      e.preventDefault(); $(this).parent('div').remove(); x--;
+    })
+
+
+    var wrapper2         = $(".container2");
+    var add_button2      = $("#add_form2");
+
+
+    $(add_button2).click(function(e){
+      e.preventDefault();
+      // if(x < max_fields){
+      // x++;
+      $(wrapper2).append('<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><input type="number" name="seva[additional_data][specific_day][]"/><a href="#" class="delete">Delete</a></div>'); //add input box
+      // }
+      // else
+      // {
+      // alert('You Reached the limits')
+      // }
+    });
+
+    $(wrapper2).on("click",".delete", function(e){
+      e.preventDefault(); $(this).parent('div').remove(); x--;
+    })
+
+
+
+    var wrapper1         = $(".container3");
+    var add_button1      = $("#add_form3");
+
+
+    $(add_button1).click(function(e){
+      e.preventDefault();
+      // if(x < max_fields){
+      // x++;
+      $(wrapper1).append('<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"><input type="number" name="seva[additional_data][repeating_interval][]"/><a href="#" class="delete">Delete</a></div>'); //add input box
+      // }
+      // else
+      // {
+      // alert('You Reached the limits')
+      // }
+    });
+
+    $(wrapper1).on("click",".delete", function(e){
+      e.preventDefault(); $(this).parent('div').remove(); x--;
+    })
+
+
+
+
+  </script>

@@ -1,0 +1,493 @@
+<h1><%=@seva.name%></h1>
+
+<%= form_tag '/bookings', method: :post,  id:'new_seva_booking_form', remote: true do %>
+<div class="container-fluid">
+  <div class="row">
+    <%= hidden_field_tag 'seva_id', @seva.id  %>
+    <input type="hidden" id="sevaId" name="seva_id" value="<%=@seva.id%>">
+    <input type="hidden" id="sevaScheduleType" name="seva_booking_type" value="singleday">
+
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+      <label for="visitor_name">Name</label>
+      <input type="text" id="visitor_name_1" name="beneficiary[]visitor[name]" value="<%=@family_members[0][:name]%>" pattern=[A-Z\sa-z]{3,20} required  list="beneficiary_list"  onchange="myFunction(this.value,this.id)">
+
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+      <label for="nakshatra">Nakshatra</label>
+      <input type="text" id="nakshatra_1" name="beneficiary[]visitor[nakshatra]" value="<%=@family_members[0][:nakshatra]%>" placeholder="" required>
+
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+      <label for="nakshatra">Gotra</label>
+      <input type="text" id="gotra_1" name="beneficiary[]visitor[gotra]" value="<%=@family_members[0][:gotra]%>" placeholder="" required>
+
+    </div>
+
+  </div>
+
+  <%if @seva.seva_type&.group_booking %>
+  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+    <div class="elem-group inlined">
+      <label for="nakshatra">No of Persons</label>
+      <input type="number" id="no_of_persons" name="no_of_persons" max="<%= @seva.seva_type.maximum_number_per_booking && @seva.seva_type.maximum_number_per_booking > 0 ? @seva.seva_type.maximum_number_per_booking : 1000%>" value="<%= @seva.additional_data['allowed_person_per_booking']&.to_i %>" placeholder="" required>
+    </div>
+  </div>
+  <%else%>
+  <div class="container2">
+    <button class="add_form_field" id="add_form2">Add New Devotee &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+
+  </div>
+
+  <datalist id="beneficiary_list">
+  <% @family_members.each do |person| %>
+  <option value="<%= person[:name] %>"></option>
+  <% end %>
+</datalist>
+<% end%>
+<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+  <div class="elem-group inlined" id="specific_day">
+    <label for="checkin-date">Enter Puja Date
+    </label>
+    <input type="date" id="checkin-date" name="pooja_date" required>
+    <span class="error" id="date_error">Selected date not present <%=@seva.name%>. Please select another date</span>
+    <br>
+  </div>
+</div>
+<%unless @seva.seva_type.group_booking %>
+<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+  <div class="elem-group" style="padding-top: 50px;">
+    <label for="checkin-date">OR
+    </label>
+  </div></div>
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+    <div class="elem-group inlined">
+      <label for="checkout-date">Multiple day booking</label>
+      <button type="button" id="schedule_pooja">Schedule Puja</button>
+    </div>
+  </div>
+    <div id="scheduled_seva" style="display: none">
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+      <div class="elem-group">
+        <label for="type" >Choose Interval:</label>
+        <select id="type" name="poojadaytype">
+          <option value="regular">All Day</option>
+          <option value="specific_day">Specific Day</option>
+          <option value="every_week_on">Specific Week Days</option>
+
+        </select>
+      </div>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+      <div class="elem-group" id="from_date">
+        <label for="start-date">From date
+        </label>
+        <input type="date" id="start-date" name="start_date" required>
+      </div></div>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <div class="elem-group"  id="to_date">
+          <label for="end-date">To date
+          </label>
+          <input type="date" id="end-date" name="end_date" required>
+        </div></div>
+
+
+        <div class="field" id="select_special_day" style="display: none" >
+
+          <div class="container1">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+              <div class="elem-group">
+                <label for="booking_1">Date
+                </label>
+                <div><input type="date" id="booking_1" name="booking[specificDate][]" onchange="checkDateValid(this.value,this.id)" required></div>
+              </div></div>
+            </div>
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+              <div class="elem-group inlined" style="padding-top: 0 px;">
+
+                <button class="add_form_field">Add New Date &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+              </div>
+            </div>
+
+          </div>
+          <div id="week_selection" style="display: none" >
+            <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+            </div>
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+              <input type="checkbox" name="week_day[]"  oninput="clearScheduledData()" value="sunday">
+              <label> Sun</label></div><div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                <input type="checkbox" name="week_day[]" oninput="clearScheduledData()" value="monday">
+                <label > Mon</label></div>
+                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                  <input type="checkbox" name="week_day[]" oninput="clearScheduledData()" value="tuesday">
+                  <label >Tue</label></div>
+                  <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                    <input type="checkbox" name="week_day[]" oninput="clearScheduledData()" value="wednesday">
+                    <label >Wed</label></div>
+                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                      <input type="checkbox" name="week_day[]" oninput="clearScheduledData()" value="thursday">
+                      <label>Thu</label>
+                    </div>
+                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                      <input type="checkbox" name="week_day[]" oninput="clearScheduledData()" value="friday">
+                      <label >Fri</label></div>
+                      <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                        <input type="checkbox" name="week_day[]" oninput="clearScheduledData()" value="saturday">
+                        <label>Sat</label>
+                      </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                      <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                      </div>
+                      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <p id="schedule_error" style="display: none; color:red">Please fill data properly</p>
+
+                        <button id="find_schedule_data" type="button">Schedule</button>
+                        <button id="cancel_schedule_data" type="button">Cancel</button>
+                      </div>
+                    </div>
+                    <%end%>
+                  </div>
+                  <div id="seva_date_detail">
+                  </div>
+                  <hr>
+                  <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <div id="booking_button">
+
+                    </div>  </div> </div>
+                    <% end %>
+
+                    <script>
+                    var wrapper2         = $(".row");
+                    var add_button2      = $("#add_form2");
+                    var schedule_date_validation =  $("#find_schedule_data");
+                    var x = 1;
+                    var y=1;
+                    $(add_button2).click(function(e){
+
+                      e.preventDefault();
+                      // if(x < max_fields){
+                      x++;
+                      var name_id = "visitor_name_"+x;
+                      var nakshatra_id = "nakshatra_"+x;
+                      var gotra_id = "nakshatra_"+x;
+                      $(wrapper2).append('<div><div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">  <label for="name">Beneficiary Name</label><input type="text" id="visitor_name_' + x+'" name="beneficiary[]visitor[name]" list="beneficiary_list"  onchange="myFunction(this.value,this.id)" required/> </div><div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><label for="nakshatra">Nakshatra</label><input type="text" id="nakshatra_' +x+'" name="beneficiary[]visitor[nakshatra]" required/></div><div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><label for="nakshatra">Nakshatra</label><input type="text" id="gotra_' +x+'" name="beneficiary[]visitor[gotra]" required/><a href="#" class="delete">Delete</a></div>  </div>'); //add input box
+                      // }
+                      // else
+                      // {
+                      // alert('You Reached the limits')
+                      // }
+                      clearScheduledData();
+                      $('#checkin-date').val('')
+
+                    });
+
+
+                    $(wrapper2).on("click",".delete", function(e){
+                      e.preventDefault();
+
+                      $(this).parent('div').parent('div').remove();
+
+                      clearScheduledData();
+                      $('#checkin-date').val('')
+                    })
+
+                    function myFunction(val,id) {
+                      var nakshatra_id = id.replace("visitor_name_","#nakshatra_")
+                      var gotra_id = id.replace("visitor_name_","#gotra_")
+                      var family_members =  <%=@family_members.to_json.html_safe  %>;
+                      clearScheduledData();
+                      //
+                      $.each(family_members, function(key,value) {
+                        if(value.name === val)
+                        {
+                          $(nakshatra_id).val(value.nakshatra)
+                          $(gotra_id).val(value.gotra)
+                          return false;
+                        }
+
+                      });
+                      // alert(family_members.val);
+                    }
+                    var sch_p     = $("#schedule_pooja");
+                    $(sch_p).click(function(e){
+                      clearScheduledData();
+                      $("#sevaScheduleType").val("sheduledpooja")
+                      $("#checkin-date").val("")
+
+                      $("#scheduled_seva").show()
+                      $('#seva_date_detail').hide()
+                      $('#checkin-date').removeAttr('required');
+                      $('#start-date').attr("required", "true");
+                      $('#end-date').attr("required", "true");
+                    })
+                    $("#cancel_schedule_data").click(function(e){
+                      clearScheduledData();
+                      $('#checkin-date').attr("required", "true");
+                      $('#start-date').removeAttr('required');
+                      $('#end-date').removeAttr('required');
+                      $('#seva_date_detail').hide();
+                      $("#scheduled_seva").hide()
+                      $("#sevaScheduleType").val("singleday")
+                    })
+                    $('#checkin-date').on('change', function (e) {
+                      checkValidSingle();
+                    })
+                    $('#no_of_persons').on('change', function (e) {
+                      checkValidSingle();
+                    })
+
+                    var wrapper3         = $(".container1");
+                    var add_button3      = $(".add_form_field");
+
+
+                    $(add_button3).click(function(e){
+                      clearScheduledData();
+                      e.preventDefault();
+                      // if(x < max_fields){
+                      y++;
+                      $(wrapper3).append('<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><div class="elem-group"><input type="date" id="booking_' + y+'" name="booking[specificDate][]" onchange="checkDateValid(this.value,this.id)" required/><a href="#" class="delete">Delete</a></div></div></div>'); //add input box
+                      // }
+                      // else
+                      // {
+                      // alert('You Reached the limits')
+                      // }
+                    });
+
+                    $(wrapper3).on("click",".delete", function(e){
+                      e.preventDefault(); $(this).parent('div').parent('div').remove(); x--;
+                    })
+                    $('#type').change(function(){
+                      clearScheduledData();
+                      if (this.value == 'regular')
+                      {
+                        $('#from_date').css("display", "block");
+                        $('#to_date').css("display", "block");
+                        $('#week_selection').css("display", "none");
+                        $('#select_special_day').css("display", "none");
+                        // $('#personal_info_wedding_date').val('');
+                        // $('#personal_info_spouse_name').val('');
+
+                      }
+                      else if (this.value == 'specific_day')
+                      {
+                        $('#from_date').css("display", "none");
+                        $('#to_date').css("display", "none");
+                        $('#week_selection').css("display", "none");
+                        $('#select_special_day').css("display", "block");
+                      }
+                      else if (this.value == 'every_week_on')
+                      {
+                        $('#from_date').css("display", "block");
+                        $('#to_date').css("display", "block");
+                        $('#week_selection').css("display", "block");
+                        $('#select_special_day').css("display", "none");
+                      }
+
+
+                    });
+                    $(schedule_date_validation).click(function(e){
+                      $('#seva_date_detail').show();
+                      var type =$('#type').val();
+                      var valid = false;
+                      if(type == 'regular')
+                      {
+                        $('#start-date').attr("required", "true");
+                        $('#end-date').attr("required", "true");
+
+                        if($('#start-date').val() && $('#end-date').val())
+                        {
+                          $('#schedule_error').hide()
+                          valid = true
+                        }
+                        else{
+                          $('#schedule_error').show()
+                        }
+                      }
+                      else if(type == 'specific_day')
+                      {
+                        $('#start-date').removeAttr('required');
+                        $('#end-date').removeAttr('required');
+                        $('#schedule_error').show()
+                        var input = document.getElementsByName('booking[specificDate][]');
+
+                        for (var i = 0; i < input.length; i++) {
+                          var a = input[i];
+
+                          if(a.value)
+                          {
+                            $('#schedule_error').hide()
+                            valid = true
+                          }
+                        }
+
+                      }
+                      else {
+                        if($('#start-date').val() && $('#end-date').val())
+                        {
+                          $('#schedule_error').hide()
+                          valid = true
+                        }
+                        else{
+                          $('#schedule_error').show()
+                        }
+                      }
+                      if(valid)
+                      {
+
+
+                        $.ajax({
+                          url: "/schedule_data_validation",
+                          type: "POST",
+                          data: $('#new_seva_booking_form').serialize(), // serializes the form's elements.
+
+                          success: function(result,status,xhr){
+
+                          },
+                          error: function(xhr,status,error){
+
+                          }
+                        });
+                      }
+                    })
+                    function checkDateValid(value,id)
+                    {
+                      var date = value
+                      var seva_id = <%=@seva.id%>
+
+                      $.ajax({
+
+                        url:'/validate_booking_date?seva_id='+seva_id+'&date='+date+'&type=multiple'+'&count=0',
+                        type: 'get',
+                        dataType :'json',
+                        success: function(data){
+
+                        }
+                      });
+                    }
+                    // $("input[name='booking[specificDate][]']").change(function() {
+                    // alert($(this).val())
+                    // });
+                    // $('#checkin-date').on('change', function (e) {
+                    // var date = $(this).val();
+                    // var seva_id = <%=@seva.id%>
+                    //
+                    // $.ajax({
+                    //
+                    //   url:'/validate_booking_date?seva_id='+seva_id+'&date='+date,
+                    //   type: 'get',
+                    //   dataType :'json',
+                    //   success: function(data){
+                    //
+                    //     alert(JSON.stringify(data))
+                    //   }
+                    // });
+                    // })
+                    function checkValidSingle()
+                    {
+
+                      $("#scheduled_seva").hide()
+                      $("#date_error").hide()
+                      $('#seva_date_detail').show()
+                      var date = $('#checkin-date').val();
+                      var seva_id = <%=@seva.id%>
+                      var input = document.getElementsByName('beneficiary[]visitor[name]');
+                      var count = 0
+
+                      if($('#no_of_persons').length){
+                        var count = $('#no_of_persons').val()
+                      }else{
+                        for (var i = 0; i < input.length; i++) {
+                          var a = input[i];
+
+                          if(a.value)
+                          {
+                            count+=1
+                          }
+                        }
+                      }
+
+                      if( date && count >0)
+                      {
+                        $.ajax({
+
+                          url:'/validate_booking_date?seva_id='+seva_id+'&date='+date+'&type=single'+'&count='+count,
+                          type: 'get',
+
+                          success: function(data){
+                            if(data.valid)
+                            {
+                              $("#date_error").show()
+                            }
+
+
+                          }
+                        });
+                      }
+                    }
+
+
+
+
+
+                    function submitForm() {
+                      var valuesToSubmit = $("#new_seva_booking_form").serialize();
+                      $.ajax({
+                        type: "POST",
+                        url: $("#new_seva_booking_form").attr('action'), //sumbits it to the given url of the form
+                        data: valuesToSubmit,
+                        // dataType: "JSON" // you want a difference between normal and ajax-calls, and json is standard
+                      }).success(function(json){
+                        $("html, body").animate({scrollTop: 0}, 1000);
+                      });
+                      return false; // prevents normal behaviour
+                      // $('#new_personal_info_form').submit();
+                    }
+                    // else
+                    // {
+                    //   $("#new_add_employee_form").validate();
+                    //   // form = document.querySelector('#new_personal_info_form');
+                    //
+                    //   $('#new_add_employee_form').closest('form').submit();
+                    // }
+
+                    // }
+                    $(".week_day[]").change(function(){
+                      alert("The text has been changed.");
+                    });
+                    $("#start-date").on("change", function() {
+
+                      clearScheduledData();
+                    });
+
+                    $("#end-date").on("change", function() {
+                      clearScheduledData();
+                    });
+
+                    function clearScheduledData() {
+
+                      $.ajax({
+
+                        url:'/clear_booking_data',
+                        type: 'get',
+
+                        success: function(data){
+
+                        }
+                      });
+                    }
+                  </script>
+                  <style>
+                  #week_selection label {
+                    float: left;
+                  }
+
+                  #week_selection    span {
+                    display: block;
+                    overflow: hidden;
+                    padding: 0px 4px 0px 6px;
+                  }
+
+                  #week_selection  input {
+                    width: 25%;
+                    } </s tyle>

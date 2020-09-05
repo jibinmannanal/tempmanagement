@@ -1,0 +1,10 @@
+$('#seva_date_detail').html("<%= escape_javascript(render :partial => 'shedule_detail') %>")
+
+
+<% if session[:booking_dates]&.length > 0 %>
+$('#checkin-date').val('')
+$('#booking_button').html("<button type='submit'  onclick='submitForm();'>Book Seva</button>")
+<%else %>
+$('#booking_button').html("")
+
+<% end %>

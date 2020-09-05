@@ -1,0 +1,14 @@
+<tr role="row">
+   <td role="cell" data-title="Seva name"> <%= seva.name %></td>
+  <td role="cell" data-title="Instructions"><%= seva.instructions %></td>
+  <td role="cell" data-title="Timing"><ul class="tags">
+  <% seva.timing.split(',').each do |time| %>
+
+  <li><a href="#" class="tag"><%=time%></a></li>
+
+  <% end %>
+  </ul></td>
+  <td role="cell" data-title="Rate"><%=seva.rate%></td>
+  <td role="cell" data-title="Username"><%= link_to 'Book', seva_bookings_path(seva),:class=>'btn btn-link btn-block' %></td>
+
+</tr>

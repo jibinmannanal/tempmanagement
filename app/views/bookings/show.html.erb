@@ -1,0 +1,47 @@
+<!-- <p id="notice"><%= notice %></p>
+
+<%= link_to 'Edit', edit_booking_path(@booking) %> |
+<%= link_to 'Back', bookings_path %> -->
+
+<div class="col">
+  <%= wicked_pdf_image_tag('file:/home/local/BLR/jibin.scaria/projects/temple/sample_app_6th_ed-master/app/assets/images/logo.jpg', height: '50px', width: '100%') %>
+</div>
+
+<p>Receipt No. <b><%=@booking.id%></b></p>
+<p style="float: right">Date: <b><%=@booking.created_at.strftime("%m/%d/%Y")%></b></p>
+
+<table class="table table-bordered" style="width:100%">
+  <thead>
+    <tr>
+      <th class="text-left" scope="col">No</th>
+        <th class="text-left" scope="col">Seva Name</th>
+      <th class="text-left" scope="col">Devotee Name</th>
+      <th class="text-left" scope="col">Nakshatra</th>
+      <th class="text-left" scope="col">Gotra</th>
+        <th class="text-left" scope="col">Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%sum=0%>
+    <%@booking.devote_list.each_with_index do |devotee,index|%>
+    <tr>
+      <% sum+=@booking.seva.rate%>
+      <th scope="row"><%=index+1%></th>
+      <td><%=@booking.seva.name%></td>
+      <td><%=devotee["name"]%></td>
+      <td><%=devotee["nakshatra"]%></td>
+      <td></td>
+        <td><%=@booking.seva.rate%></td>
+          <td></td>
+    </tr>
+<%end%>
+<tr>
+  <th scope="row" colspan="3">Total</th>
+  <th scope="row" colspan="6"><%=sum%></th>
+    </tr>
+  </tbody>
+</table>
+<% if @booking.seva.instructions.present? %>
+<h2>Instructions</h2>
+  <p><%= @booking.seva.instructions %></p>
+<% end %>

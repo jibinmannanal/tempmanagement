@@ -1,0 +1,57 @@
+
+<section class="container">
+  <h1>  Seva List</h1>
+  <table role="table" class="table">
+    <thead role="rowgroup">
+      <tr role="row">
+        <th role="columnheader">Seva name</th>
+        <th role="columnheader">Instructions</th>
+        <th role="columnheader">Timing</th>
+        <th role="columnheader">Rate</th>
+        <th role="columnheader">Book</th>
+      </tr>
+    </thead>
+    <tbody role="rowgroup">
+        <%= render 'shared/feed' %>
+
+
+
+
+
+    </tbody>
+  </table>
+  <% if @sevas.any? %>
+
+
+    <%= will_paginate @sevas,
+                      params: { controller: :static_pages, action: :home } %>
+  <% end %>
+
+</section>
+
+<!-- <#% if logged_in? %> -->
+  <!-- <div class="row">
+    <aside class="col-md-4">
+      <section class="user_info">
+        <%= render 'shared/user_info' %>
+      </section>
+      <section class="stats">
+        <%= render 'shared/stats' %>
+      </section>
+      <section class="micropost_form">
+        <%= render 'shared/micropost_form' %>
+      </section>
+    </aside>
+    <div class="col-md-8">
+      <h3>Micropost Feed</h3>
+      <%= render 'shared/feed' %>
+    </div>
+  </div> -->
+
+<script>
+$('#bg').on("mousemove",function(e){
+  let moveX = (e.pageX / $(this).width()) * 30 + 50;
+  let moveY = (e.pageY / $(this).height()) * 30 + 50;
+  $('#bg').css("background-position",((moveX + "% ") + (moveY + "%")));
+})
+</script>
