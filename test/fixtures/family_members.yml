@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  nakshatra: MyString
+  dob: 2020-07-27 07:52:21
+
+two:
+  name: MyString
+  nakshatra: MyString
+  dob: 2020-07-27 07:52:21
