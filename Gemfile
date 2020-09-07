@@ -21,7 +21,7 @@ gem 'pg',         '1.2.3'
 gem 'bootstrap-datepicker-rails'
 gem "montrose"
 gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
+
 
 group :development, :test do
 
@@ -48,7 +48,7 @@ end
 
 group :production do
 
-  gem 'aws-sdk-s3', '1.46.0', require: false
+  #gem 'aws-sdk-s3', '1.46.0', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
