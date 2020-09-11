@@ -21,6 +21,7 @@ gem 'pg',         '1.2.3'
 gem 'bootstrap-datepicker-rails'
 gem "montrose"
 gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 
 
 group :development, :test do
