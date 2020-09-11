@@ -29,7 +29,7 @@ class FamilyMembersController < ApplicationController
 
     respond_to do |format|
       if @family_member.save
-        format.html { redirect_to @family_member, notice: 'Family member was successfully created.' }
+        format.html { redirect_to family_members_url, notice: 'Family member was successfully created.' }
         format.json { render :show, status: :created, location: @family_member }
       else
         format.html { render :new }
@@ -43,7 +43,7 @@ class FamilyMembersController < ApplicationController
   def update
     respond_to do |format|
       if @family_member.update(family_member_params)
-        format.html { redirect_to @family_member, notice: 'Family member was successfully updated.' }
+        format.html { redirect_to family_members_url, notice: 'Family member was successfully updated.' }
         format.json { render :show, status: :ok, location: @family_member }
       else
         format.html { render :edit }

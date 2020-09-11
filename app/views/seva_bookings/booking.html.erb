@@ -46,9 +46,9 @@
 <% end%>
 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
   <div class="elem-group inlined" id="specific_day">
-    <label for="checkin-date">Enter Puja Date
+    <label for="checkin-date">Select Seva Date
     </label>
-    <input type="date" id="checkin-date" name="pooja_date" required>
+    <input type="date" id="checkin-date" name="pooja_date" min="<%=Date.today%>"  max="<%=Date.today + 1.year%>" required>
     <span class="error" id="date_error">Selected date not present <%=@seva.name%>. Please select another date</span>
     <br>
   </div>
@@ -61,8 +61,8 @@
   </div></div>
   <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
     <div class="elem-group inlined">
-      <label for="checkout-date">Multiple day booking</label>
-      <button type="button" id="schedule_pooja">Schedule Puja</button>
+      <label for="checkout-date"></label>
+      <button type="button" id="schedule_pooja">Select multiple dates</button>
     </div>
   </div>
     <div id="scheduled_seva" style="display: none">
@@ -81,13 +81,13 @@
       <div class="elem-group" id="from_date">
         <label for="start-date">From date
         </label>
-        <input type="date" id="start-date" name="start_date" required>
+        <input type="date" id="start-date" name="start_date"  min="<%=Date.today%>"  max="<%=Date.today + 1.year%>" required>
       </div></div>
       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
         <div class="elem-group"  id="to_date">
           <label for="end-date">To date
           </label>
-          <input type="date" id="end-date" name="end_date" required>
+          <input type="date" id="end-date" name="end_date"  min="<%=Date.today%>"  max="<%=Date.today + 1.year%>" required>
         </div></div>
 
 
@@ -98,7 +98,7 @@
               <div class="elem-group">
                 <label for="booking_1">Date
                 </label>
-                <div><input type="date" id="booking_1" name="booking[specificDate][]" onchange="checkDateValid(this.value,this.id)" required></div>
+                <div><input type="date" id="booking_1" name="booking[specificDate][]"  min="<%=Date.today%>"  max="<%=Date.today + 1.year%>" onchange="checkDateValid(this.value,this.id)" required></div>
               </div></div>
             </div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -428,7 +428,11 @@
 
 
 
-
+                    $("#start-date").on("change", function() {
+  $('#end-date').val('')
+                    
+                        document.getElementById("end-date").setAttribute("min",  $(this).val());
+                    });
 
                     function submitForm() {
                       var valuesToSubmit = $("#new_seva_booking_form").serialize();
@@ -458,7 +462,7 @@
                     $("#start-date").on("change", function() {
 
                       clearScheduledData();
-                    });
+                      });
 
                     $("#end-date").on("change", function() {
                       clearScheduledData();
@@ -476,6 +480,7 @@
                         }
                       });
                     }
+
                   </script>
                   <style>
                   #week_selection label {

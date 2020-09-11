@@ -13,13 +13,12 @@
 
   <div class="field">
     <%= form.label :name %>
-    <%= form.text_field :name,class: "form-control" %>
+    <%= form.text_field :name,class: "form-control" ,:required => true%>
   </div>
 
   <div class="field">
     <%= form.label :nakshatra %>
-    <%= form.select(:nakshatra, options_for_select(["Ashwini","Bharani","Krutika","Rohini","Mrigashira","Aridra","Punarvasu","Pushya","Ashlesha","Makha","Pubba","Uttara","Hasta","Chitta","Swati","Vishakha","Anuradha","Jyeshta","Moola","Purvashada","Uttarashada","Shravana",
-    "Dhanista","Shatabhisha","Poorvabadra","Uttarabadra","Revati"]), {}, {class: "form-control"}) %>
+    <%= form.select(:nakshatra, options_for_select(NAKSHATRA_LIST.keys), { :selected => family_member.nakshatra}, {class: "form-control"}) %>
 
 
 </div>
@@ -30,15 +29,38 @@
     <div class="field">
   <%= form.label :gotra %><br />
 
-  <%= form.select(:gotra,   options_for_select(Gotra.all.collect{ |u| [u.name, u.name] }), {}, {class: "form-control"}) %>
+  <%= form.select(:gotra,   options_for_select(Gotra.order("name").collect{ |u| [u.name, u.name] }), {:selected => family_member.gotra}, {class: "form-control"}) %>
 
 
 
 </div>
               <%= form.label :rashi %><br />
-                <%= form.text_field :rashi, class: "form-control" %>
+              <%= form.select(:rashi, options_for_select( family_member.nakshatra ? NAKSHATRA_LIST[family_member.nakshatra] : NAKSHATRA_LIST["Aarudra"]), {:selected => family_member.rashi}, {class: "form-control"}) %>
+
 
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
+<script>
+$('#family_member_nakshatra').on('change', function (e) {
+  var nakshatra = $(this).val();
+
+var option_values = "<%=NAKSHATRA_LIST.to_json%>"
+var values = option_values.replace(/&quot;/g,'"')
+var data = JSON.parse(values)
+
+      $('#family_member_rashi').find('option')
+      .remove()
+
+      for(var i = 0; i < data[nakshatra].length; i++) {
+
+
+        $('#family_member_rashi').append('<option value="'+data[nakshatra][i]+'">'+data[nakshatra][i]+'</option>');
+
+      }
+
+
+})
+
+</script>
