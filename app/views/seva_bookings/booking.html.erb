@@ -6,23 +6,47 @@
     <%= hidden_field_tag 'seva_id', @seva.id  %>
     <input type="hidden" id="sevaId" name="seva_id" value="<%=@seva.id%>">
     <input type="hidden" id="sevaScheduleType" name="seva_booking_type" value="singleday">
-
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+<div class="row">
+  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
       <label for="visitor_name">Name</label>
-      <input type="text" id="visitor_name_1" name="beneficiary[]visitor[name]" value="<%=@family_members[0][:name]%>" pattern=[A-Z\sa-z]{3,20} required  list="beneficiary_list"  onchange="myFunction(this.value,this.id)">
 
     </div>
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
       <label for="nakshatra">Nakshatra</label>
-      <input type="text" id="nakshatra_1" name="beneficiary[]visitor[nakshatra]" value="<%=@family_members[0][:nakshatra]%>" placeholder="" required>
 
     </div>
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
       <label for="nakshatra">Gotra</label>
-      <input type="text" id="gotra_1" name="beneficiary[]visitor[gotra]" value="<%=@family_members[0][:gotra]%>" placeholder="" required>
+      </div>
+  </div>
+  <div id="seva_list_fa">
+<%@family_members.each_with_index do |dv,index|%>
+<div class="row" >
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+
+      <input type="text" id="visitor_name_<%=index%>" name="beneficiary[]visitor[name]" value="<%=@family_members[index][:name]%>" pattern=[A-Z\sa-z]{3,20} required  list="beneficiary_list"  onchange="myFunction(this.value,this.id)">
 
     </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 
+      <input type="text" id="nakshatra_<%=index%>" name="beneficiary[]visitor[nakshatra]" value="<%=@family_members[index][:nakshatra]%>" placeholder="" required>
+
+    </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+
+      <input type="text" id="gotra_<%=index%>" name="beneficiary[]visitor[gotra]" value="<%=@family_members[index][:gotra]%>" placeholder="" required>
+
+    </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+
+      <a href="#" class="delete">x</a>
+
+    </div>
+  </div>
+
+<%end%>
+
+</div>
   </div>
 
   <%if @seva.seva_type&.group_booking %>
@@ -34,7 +58,7 @@
   </div>
   <%else%>
   <div class="container2">
-    <button class="add_form_field" id="add_form2">Add New Devotee &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+    <button class="add_form_field" id="add_form2"> <span style="font-size:16px; font-weight:bold;">+ </span></button>
 
   </div>
 
@@ -60,19 +84,19 @@
     </label>
   </div></div>
   <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-    <div class="elem-group inlined">
-      <label for="checkout-date"></label>
+    <div class="elem-group">
+      <label style="padding-top:17px"></label>
       <button type="button" id="schedule_pooja">Select multiple dates</button>
     </div>
   </div>
     <div id="scheduled_seva" style="display: none">
     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
       <div class="elem-group">
-        <label for="type" >Choose Interval:</label>
+        <label for="type" >Frequency:</label>
         <select id="type" name="poojadaytype">
           <option value="regular">All Day</option>
           <option value="specific_day">Specific Day</option>
-          <option value="every_week_on">Specific Week Days</option>
+          <option value="every_week_on">Specific Week Day</option>
 
         </select>
       </div>
@@ -98,13 +122,14 @@
               <div class="elem-group">
                 <label for="booking_1">Date
                 </label>
-                <div><input type="date" id="booking_1" name="booking[specificDate][]"  min="<%=Date.today%>"  max="<%=Date.today + 1.year%>" onchange="checkDateValid(this.value,this.id)" required></div>
+                <div><input type="date" id="booking_1" name="booking_specific_date"  min="<%=Date.today%>"  max="<%=Date.today + 1.year%>" onchange="checkDateValid(this.value,this.id)" required></div>
               </div></div>
             </div>
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-              <div class="elem-group inlined" style="padding-top: 0 px;">
-
-                <button class="add_form_field">Add New Date &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+              <div class="elem-group inlined">
+                <label  style="padding-top: 12px;">
+                </label>
+                <button id="add_specific_day"><span>+ </span></button>
               </div>
             </div>
 
@@ -113,25 +138,25 @@
             <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
             </div>
             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-              <input type="checkbox" name="week_day[]"  oninput="clearScheduledData()" value="sunday">
+              <input type="checkbox" name="week_day[]"  oninput="getScheduledData()" value="sunday">
               <label> Sun</label></div><div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                <input type="checkbox" name="week_day[]" oninput="clearScheduledData()" value="monday">
+                <input type="checkbox" name="week_day[]" oninput="getScheduledData()" value="monday">
                 <label > Mon</label></div>
                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                  <input type="checkbox" name="week_day[]" oninput="clearScheduledData()" value="tuesday">
+                  <input type="checkbox" name="week_day[]" oninput="getScheduledData()" value="tuesday">
                   <label >Tue</label></div>
                   <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                    <input type="checkbox" name="week_day[]" oninput="clearScheduledData()" value="wednesday">
+                    <input type="checkbox" name="week_day[]" oninput="getScheduledData()" value="wednesday">
                     <label >Wed</label></div>
                     <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                      <input type="checkbox" name="week_day[]" oninput="clearScheduledData()" value="thursday">
+                      <input type="checkbox" name="week_day[]" oninput="getScheduledData()" value="thursday">
                       <label>Thu</label>
                     </div>
                     <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                      <input type="checkbox" name="week_day[]" oninput="clearScheduledData()" value="friday">
+                      <input type="checkbox" name="week_day[]" oninput="getScheduledData()" value="friday">
                       <label >Fri</label></div>
                       <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                        <input type="checkbox" name="week_day[]" oninput="clearScheduledData()" value="saturday">
+                        <input type="checkbox" name="week_day[]" onchange="getScheduledData()" value="saturday">
                         <label>Sat</label>
                       </div>
                     </div>
@@ -142,8 +167,7 @@
                       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                         <p id="schedule_error" style="display: none; color:red">Please fill data properly</p>
 
-                        <button id="find_schedule_data" type="button">Schedule</button>
-                        <button id="cancel_schedule_data" type="button">Cancel</button>
+
                       </div>
                     </div>
                     <%end%>
@@ -158,11 +182,11 @@
                     <% end %>
 
                     <script>
-                    var wrapper2         = $(".row");
+                    var wrapper2         = $("#seva_list_fa");
                     var add_button2      = $("#add_form2");
                     var schedule_date_validation =  $("#find_schedule_data");
-                    var x = 1;
-                    var y=1;
+                    var x = "<%=@family_members.length%>";
+                    var y=  "<%=@family_members.length%>";
                     $(add_button2).click(function(e){
 
                       e.preventDefault();
@@ -171,7 +195,7 @@
                       var name_id = "visitor_name_"+x;
                       var nakshatra_id = "nakshatra_"+x;
                       var gotra_id = "nakshatra_"+x;
-                      $(wrapper2).append('<div><div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">  <label for="name">Beneficiary Name</label><input type="text" id="visitor_name_' + x+'" name="beneficiary[]visitor[name]" list="beneficiary_list"  onchange="myFunction(this.value,this.id)" required/> </div><div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><label for="nakshatra">Nakshatra</label><input type="text" id="nakshatra_' +x+'" name="beneficiary[]visitor[nakshatra]" required/></div><div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><label for="nakshatra">Nakshatra</label><input type="text" id="gotra_' +x+'" name="beneficiary[]visitor[gotra]" required/><a href="#" class="delete">Delete</a></div>  </div>'); //add input box
+                      $(wrapper2).append('<div class="row"><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"> <input type="text" id="visitor_name_' + x+'" name="beneficiary[]visitor[name]" list="beneficiary_list"  onchange="myFunction(this.value,this.id)" required/> </div><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><input type="text" id="nakshatra_' +x+'" name="beneficiary[]visitor[nakshatra]" required/></div><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><input type="text" id="gotra_' +x+'" name="beneficiary[]visitor[gotra]" required/></div><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><a href="#" class="delete">x</a></div>  </div>'); //add input box
                       // }
                       // else
                       // {
@@ -216,7 +240,7 @@
                       $("#checkin-date").val("")
 
                       $("#scheduled_seva").show()
-                      $('#seva_date_detail').hide()
+                      // $('#seva_date_detail').hide()
                       $('#checkin-date').removeAttr('required');
                       $('#start-date').attr("required", "true");
                       $('#end-date').attr("required", "true");
@@ -226,7 +250,7 @@
                       $('#checkin-date').attr("required", "true");
                       $('#start-date').removeAttr('required');
                       $('#end-date').removeAttr('required');
-                      $('#seva_date_detail').hide();
+                      // $('#seva_date_detail').hide();
                       $("#scheduled_seva").hide()
                       $("#sevaScheduleType").val("singleday")
                     })
@@ -241,12 +265,18 @@
                     var add_button3      = $(".add_form_field");
 
 
-                    $(add_button3).click(function(e){
-                      clearScheduledData();
+                    $("#add_specific_day").click(function(e){
+                      // clearScheduledData();
                       e.preventDefault();
+                       if($("#booking_1").val())
+                       {
+
+                                                getScheduledData();
+                         $("#booking_1").val('')
+                       }
                       // if(x < max_fields){
-                      y++;
-                      $(wrapper3).append('<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><div class="elem-group"><input type="date" id="booking_' + y+'" name="booking[specificDate][]" onchange="checkDateValid(this.value,this.id)" required/><a href="#" class="delete">Delete</a></div></div></div>'); //add input box
+                      // y++;
+                      // $(wrapper3).append('<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><div class="elem-group"><input type="date" id="booking_' + y+'" name="booking[specificDate][]" onchange="checkDateValid(this.value,this.id)" required/><a href="#" class="delete">Delete</a></div></div></div>'); //add input box
                       // }
                       // else
                       // {
@@ -259,6 +289,7 @@
                     })
                     $('#type').change(function(){
                       clearScheduledData();
+
                       if (this.value == 'regular')
                       {
                         $('#from_date').css("display", "block");
@@ -271,6 +302,8 @@
                       }
                       else if (this.value == 'specific_day')
                       {
+                        // clearScheduledData();
+
                         $('#from_date').css("display", "none");
                         $('#to_date').css("display", "none");
                         $('#week_selection').css("display", "none");
@@ -284,10 +317,10 @@
                         $('#select_special_day').css("display", "none");
                       }
 
-
                     });
-                    $(schedule_date_validation).click(function(e){
-                      $('#seva_date_detail').show();
+        $('#end-date').on('change', function (e) {
+
+                      // $('#seva_date_detail').show();
                       var type =$('#type').val();
                       var valid = false;
                       if(type == 'regular')
@@ -332,22 +365,10 @@
                           $('#schedule_error').show()
                         }
                       }
-                      if(valid)
+                      if(valid && type == 'regular')
                       {
 
-
-                        $.ajax({
-                          url: "/schedule_data_validation",
-                          type: "POST",
-                          data: $('#new_seva_booking_form').serialize(), // serializes the form's elements.
-
-                          success: function(result,status,xhr){
-
-                          },
-                          error: function(xhr,status,error){
-
-                          }
-                        });
+getScheduledData();
                       }
                     })
                     function checkDateValid(value,id)
@@ -388,7 +409,7 @@
 
                       $("#scheduled_seva").hide()
                       $("#date_error").hide()
-                      $('#seva_date_detail').show()
+                      // $('#seva_date_detail').show()
                       var date = $('#checkin-date').val();
                       var seva_id = <%=@seva.id%>
                       var input = document.getElementsByName('beneficiary[]visitor[name]');
@@ -430,7 +451,7 @@
 
                     $("#start-date").on("change", function() {
   $('#end-date').val('')
-                    
+
                         document.getElementById("end-date").setAttribute("min",  $(this).val());
                     });
 
@@ -469,16 +490,40 @@
                     });
 
                     function clearScheduledData() {
-
+                      $('#start-date').val('')
+                        $('#end-date').val('')
                       $.ajax({
+                        url: "/clear_booking_data",
+                        type: "get",
+                        // data: $('#new_seva_booking_form').serialize(), // serializes the form's elements.
 
-                        url:'/clear_booking_data',
-                        type: 'get',
+                        success: function(result,status,xhr){
 
-                        success: function(data){
+                        },
+                        error: function(xhr,status,error){
 
                         }
                       });
+
+                    }
+
+
+                    function getScheduledData() {
+
+
+                                              $.ajax({
+                                                url: "/schedule_data_validation",
+                                                type: "POST",
+                                                data: $('#new_seva_booking_form').serialize(), // serializes the form's elements.
+
+                                                success: function(result,status,xhr){
+
+                                                },
+                                                error: function(xhr,status,error){
+
+                                                }
+                                              });
+
                     }
 
                   </script>

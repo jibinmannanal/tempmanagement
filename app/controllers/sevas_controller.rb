@@ -37,8 +37,8 @@ class SevasController < ApplicationController
         h['Data'] << {"message"=> message,"time"=>Time.now.strftime("%m/%d/%Y"),"params"=>seva_params }
 
         @seva.update(audit_logs:  h)
-
-        format.html { redirect_to @seva, notice: 'Seva was successfully created.' }
+flash[:success] = 'Seva was successfully created.'
+        format.html { redirect_to sevas_url }
         format.json { render :show, status: :created, location: @seva }
       else
         format.html { render :new }
@@ -52,8 +52,9 @@ class SevasController < ApplicationController
   def update
     respond_to do |format|
       if @seva.update(seva_params)
-        format.html { redirect_to @seva, notice: 'Seva was successfully updated.' }
-        format.json { render :show, status: :ok, location: @seva }
+        flash[:success] = 'Seva was successfully updated.'
+                format.html { redirect_to sevas_url }
+          format.json { render :show, status: :ok, location: @seva }
       else
         format.html { render :edit }
         format.json { render json: @seva.errors, status: :unprocessable_entity }

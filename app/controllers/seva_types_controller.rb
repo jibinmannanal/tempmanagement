@@ -28,7 +28,9 @@ class SevaTypesController < ApplicationController
 
     respond_to do |format|
       if @seva_type.save
-        format.html { redirect_to @seva_type, notice: 'Seva type was successfully created.' }
+        flash[:success] = 'Seva type was successfully created.'
+
+        format.html { redirect_to seva_types_url}
         format.json { render :show, status: :created, location: @seva_type }
       else
         format.html { render :new }
@@ -42,7 +44,8 @@ class SevaTypesController < ApplicationController
   def update
     respond_to do |format|
       if @seva_type.update(seva_type_params)
-        format.html { redirect_to @seva_type, notice: 'Seva type was successfully updated.' }
+            flash[:success] = 'Seva type was successfully updated.'
+        format.html { redirect_to seva_types_url }
         format.json { render :show, status: :ok, location: @seva_type }
       else
         format.html { render :edit }
@@ -56,7 +59,8 @@ class SevaTypesController < ApplicationController
   def destroy
     @seva_type.destroy
     respond_to do |format|
-      format.html { redirect_to seva_types_url, notice: 'Seva type was successfully destroyed.' }
+        flash[:success] = 'Seva type was successfully destroyed.'
+      format.html { redirect_to seva_types_url }
       format.json { head :no_content }
     end
   end

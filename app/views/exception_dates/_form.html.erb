@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, :required => true %>
   </div>
   <div class="field" id="select_special_day"  >
 
@@ -21,11 +21,11 @@
         <%if form.object&.dates && form.object&.dates&.length > 0 %>
         <%form.object&.dates&.each do |day| %>
 
-        <div><input type="date" name="exception_date[dates][]", value="<%=day%>"><a href="#" class="delete">Delete</a></div>
+        <div><input type="date" name="exception_date[dates][]", value="<%=day%>" required><a href="#" class="delete">Delete</a></div>
 
               <%end%>
                <% else %>
-                 <div><input type="date" name="exception_date[dates][]"></div>
+                 <div><input type="date" name="exception_date[dates][]" required></div>
 
         <%end%>
 
@@ -48,7 +48,7 @@
       e.preventDefault();
       // if(x < max_fields){
           // x++;
-          $(wrapper3).append('<div><input type="date" name="exception_date[dates][]"/><a href="#" class="delete">Delete</a></div>'); //add input box
+          $(wrapper3).append('<div><input type="date" name="exception_date[dates][]" required /><a href="#" class="delete">Delete</a></div>'); //add input box
       // }
   // else
   // {

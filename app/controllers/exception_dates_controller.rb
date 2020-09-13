@@ -28,7 +28,8 @@ class ExceptionDatesController < ApplicationController
 
     respond_to do |format|
       if @exception_date.save
-        format.html { redirect_to @exception_date, notice: 'Exception date was successfully created.' }
+        flash[:success] = 'Exception date was successfully created.'
+        format.html { redirect_to exception_dates_url}
         format.json { render :show, status: :created, location: @exception_date }
       else
         format.html { render :new }
@@ -42,7 +43,8 @@ class ExceptionDatesController < ApplicationController
   def update
     respond_to do |format|
       if @exception_date.update(exception_date_params)
-        format.html { redirect_to @exception_date, notice: 'Exception date was successfully updated.' }
+          flash[:success] = 'Exception date was successfully updated.'
+        format.html { redirect_to exception_dates_url }
         format.json { render :show, status: :ok, location: @exception_date }
       else
         format.html { render :edit }
@@ -56,7 +58,8 @@ class ExceptionDatesController < ApplicationController
   def destroy
     @exception_date.destroy
     respond_to do |format|
-      format.html { redirect_to exception_dates_url, notice: 'Exception date was successfully destroyed.' }
+        flash[:success] = 'Exception date was successfully destroyed.'
+      format.html { redirect_to exception_dates_url}
       format.json { head :no_content }
     end
   end

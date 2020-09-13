@@ -28,7 +28,8 @@ before_action :user_role
 
     respond_to do |format|
       if @gotra.save
-        format.html { redirect_to @gotra, notice: 'Gotra was successfully created.' }
+          flash[:success] = 'Gotra was successfully created.'
+        format.html { redirect_to gotras_url}
         format.json { render :show, status: :created, location: @gotra }
       else
         format.html { render :new }
@@ -42,7 +43,8 @@ before_action :user_role
   def update
     respond_to do |format|
       if @gotra.update(gotra_params)
-        format.html { redirect_to @gotra, notice: 'Gotra was successfully updated.' }
+          flash[:success] = 'Gotra was successfully updated.'
+        format.html { redirect_to gotras_url  }
         format.json { render :show, status: :ok, location: @gotra }
       else
         format.html { render :edit }
@@ -56,7 +58,8 @@ before_action :user_role
   def destroy
     @gotra.destroy
     respond_to do |format|
-      format.html { redirect_to gotras_url, notice: 'Gotra was successfully destroyed.' }
+      flash[:success] = 'Gotra was successfully destroyed.'
+      format.html { redirect_to gotras_url }
       format.json { head :no_content }
     end
   end

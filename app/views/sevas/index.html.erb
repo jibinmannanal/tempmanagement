@@ -11,7 +11,7 @@
       <th>Identification number</th>
       <th>Status</th>
       <th>Audit logs</th>
-      <th colspan="3"></th>
+      <th>Edit</th>
     </tr>
   </thead>
 
@@ -21,13 +21,12 @@
         <td><%= seva.name %></td>
         <td><%= seva.instructions %></td>
         <td><%= seva.rate %></td>
-        <td><%= seva.identification_number %></td>
+        <td><%= seva.id %></td>
         <td><%= seva.status %></td>
         <td><%= seva.audit_logs %></td>
-        <td><%= link_to 'Show', seva %></td>
+
         <td><%= link_to 'Edit', edit_seva_path(seva) %></td>
-        <td><%= link_to 'Delete', seva, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+            </tr>
     <% end %>
   </tbody>
 </table>

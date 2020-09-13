@@ -16,7 +16,7 @@
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 <div class="field">
   <%= form.label :name %>
-  <%= form.text_field :name %>
+  <%= form.text_field :name ,:required=>true%>
 </div>
 </div>
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -28,7 +28,7 @@
   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 <div class="field">
   <%= form.label :rate %>
-  <%= form.text_field :rate %>
+  <%= form.text_field :rate, :required=>true %>
 </div>
 </div>
   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -63,7 +63,7 @@
 </div>
 </div>
 
-<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 <div class="field">
   <%= form.label :exception_dates %>
   <!-- options_for_select(ExceptionDate.all.collect{|x| [x.name,x.id]}), {:multiple => true} -->
@@ -74,17 +74,7 @@
     { :multiple => true, :size => 5 }) %>
   </div>
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-      <div class="field">
-        <%= form.label :no_of_persons %>
-    <%if form.object&.additional_data && form.object&.additional_data['allowed_person_per_booking'] %>
-    <div><input type="number" name="seva[additional_data][allowed_person_per_booking]", value="<%=form.object&.additional_data['allowed_person_per_booking']%>"></div>
-    <%else%>
 
-    <input type="number" name="seva[additional_data][allowed_person_per_booking]", value="1">
-    <%end%>
-    </div>
-      </div>
   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 <div class="field" id="select_day_in_week" style="display: <%= form.object.event_type == 'every_week_on' ?  'block' : 'none' %>">
 

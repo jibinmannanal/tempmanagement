@@ -1,6 +1,6 @@
 class SevaBookingsController < ApplicationController
   before_action :logged_in_user
-    before_action :admin_user,     only: :report_data
+  before_action :admin_user,     only: :report_data
   def booking
 
     @family_members=[]
@@ -16,9 +16,9 @@ class SevaBookingsController < ApplicationController
     @seva = Seva.find(params[:seva_id])
     date = params[:date]
     @count = params[:count]&.to_i
-    if(@seva.additional_data['allowed_person_per_booking']&.to_i > 1)
+    if(@seva.seva_type.group_booking )
       @count += 2
-        end
+    end
     if @seva.event_type == 'regular'
       if @seva.exception_dates&.pluck(:dates)&.flatten&.uniq&.include?(date)
         @valid = false
@@ -94,14 +94,28 @@ class SevaBookingsController < ApplicationController
     end
     @count = users.count
     exception_dates = @seva.exception_dates&.pluck(:dates)&.flatten
+
+
+
     if(params["poojadaytype"] == 'specific_day')
-      @selected_days = params["booking"]["specificDate"].select(&:presence)
+      unless session[:specific_booking_dates].present?
+          session[:specific_booking_dates] =  []
+
+
+    end
+
+
+       session[:specific_booking_dates] << params["booking_specific_date"]
+       puts  session[:specific_booking_dates].inspect
+       puts "000000000000000000000000000000000000000000000000000000"
+       @selected_days =  session[:specific_booking_dates]
       # render json: {dates: @selected_days }
     elsif (params["poojadaytype"] == 'regular')
       dd= @seva.additional_data["every_week_on"] - ["0"]
 
       specific_dates_sym = dd.map &:to_sym
-
+      puts dd.inspect
+      puts "exception_dates"
       devotee_seva_dates = Montrose.daily(starts: params[:start_date].to_date, interval: 1,until: params[:end_date].to_date).to_a
       @seva_date_list =[]
       devotee_seva_dates&.flatten.each do |datetime|
@@ -144,9 +158,11 @@ class SevaBookingsController < ApplicationController
         dd= @seva&.additional_data["every_week_on"] - ["0"]
 
         specific_dates_sym = dd.map &:to_sym
-        s=params[:week_day].map &:to_sym
+        if(params[:week_day])
+        s=params[:week_day]&.map &:to_sym
+
         devotee_seva_dates = Montrose.weekly(on: s,
-          between: params[:start_date].to_date..params[:end_date].to_date).to_a
+          between: params[:start_date].to_date-1.day..params[:end_date].to_date).to_a
 
           @seva_date_list =[]
           devotee_seva_dates&.flatten.each do |datetime|
@@ -182,11 +198,18 @@ class SevaBookingsController < ApplicationController
 
               @selected_days  = (day_list & @seva_date_list) -  exception_dates
 
+      else
+
+        @selected_days  =[]
+      end
+
               # render json: {dates: @selected_days }
 
             end
 
           end
+          puts @selected_days.inspect
+          puts "ddddddddddddddddddddddddddd"
           session[:booking_dates] = @selected_days
 
         end
@@ -220,7 +243,8 @@ class SevaBookingsController < ApplicationController
         end
 
         def clear_booking_data
-          session[:booking_dates] = nil
+                    session[:specific_booking_dates] =  []
+          session[:booking_dates] = []
         end
 
         private

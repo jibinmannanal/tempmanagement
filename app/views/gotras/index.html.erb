@@ -1,4 +1,3 @@
-<p id="notice"><%= notice %></p>
 
 <h1>Gotras</h1>
 
@@ -6,7 +5,7 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th colspan="3"></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
@@ -14,9 +13,9 @@
     <% @gotras.each do |gotra| %>
       <tr>
         <td><%= gotra.name %></td>
-        <td><%= link_to 'Show', gotra %></td>
+
         <td><%= link_to 'Edit', edit_gotra_path(gotra) %></td>
-        <td><%= link_to 'Destroy', gotra, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Delete', gotra, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

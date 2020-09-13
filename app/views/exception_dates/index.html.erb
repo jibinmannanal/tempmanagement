@@ -16,9 +16,9 @@
       <tr>
         <td><%= exception_date.name %></td>
         <td><%= exception_date.dates.to_sentence %></td>
-      
+
         <td><%= link_to 'Edit', edit_exception_date_path(exception_date) %></td>
-        <td><%= link_to 'Destroy', exception_date, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Delete', exception_date, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
