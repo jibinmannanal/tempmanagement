@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :dhanya_sevas
+  resources :groups
+  resources :donations
   resources :seva_types
   resources :bookings
   # get ':seva_id/seva_bookings/booking'
@@ -11,8 +14,9 @@ post 'schedule_data_validation', to: 'seva_bookings#schedule_data_validation',as
 post 'remove_booked_date', to: 'seva_bookings#remove_booked_date',as: 'remove_booked_date'
 get 'clear_booking_data', to: 'seva_bookings#clear_booking_data',as: 'clear_booking_data'
 get 'report_data', to: 'seva_bookings#report_data',as: 'report_data'
+get 'cook_report_data', to: 'seva_bookings#cook_report_data',as: 'cook_report_data'
 get 'report_data_js', to: 'seva_bookings#report_data_js',as: 'report_data_js'
-
+get 'cook_report_data_js', to: 'seva_bookings#cook_report_data_js',as: 'cook_report_data_js'
   resources :exception_dates
   resources :gotras
   resources :family_members

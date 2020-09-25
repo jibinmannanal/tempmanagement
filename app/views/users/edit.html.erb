@@ -4,7 +4,7 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <%= form_with(model: @user, local: true) do |f| %>
-    <%=@user.inspect%>
+
       <%= render 'shared/error_messages', object: f.object %>
 
       <%= f.label :name %>
@@ -38,6 +38,8 @@
         <%if current_user&.role?('admin') || current_user&.role?('manager') %>
           <%= f.label :roles %>
   <%= f.collection_check_boxes :role_ids, Role.all, :id, :name %>
+  <%= f.label :groups %>
+<%= f.collection_check_boxes :group_ids, Group.all, :id, :name %>
   <%end%>
 
 

@@ -80,6 +80,6 @@ flash[:success] = 'Seva was successfully created.'
 
     # Only allow a list of trusted parameters through.
     def seva_params
-        params.require(:seva).permit(:name, :instructions, :rate, :identification_number, :status, :audit_logs,:timing,:seva_type_id,:event_type,:exception_date_ids=>[],:additional_data=>{})
+        params.require(:seva).permit(:name, :instructions, :rate, :identification_number, :status, :audit_logs,:timing,:seva_type_id,:no_of_persons,:event_type,:tirtha_prasada_amount,:exception_date_ids=>[],:additional_data=>{})
     end
 end

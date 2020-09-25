@@ -1,106 +1,232 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
-  <div class="container">
+
     <!-- <%= link_to "sample app", root_path, id: "logo" %> -->
     <nav>
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed"
-                data-toggle="collapse"
-                data-target="#bs-example-navbar-collapse-1"
-                aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <ul class="nav navbar-nav navbar-right collapse navbar-collapse"
-          id="bs-example-navbar-collapse-1">
-        <li><%= link_to "Home", root_path %></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Sevas <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
+        data-toggle="collapse"
+        data-target="#bs-example-navbar-collapse-1"
+        aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <ul class="nav navbar-nav navbar-right collapse navbar-collapse"
+    id="bs-example-navbar-collapse-1">
+    <li><%= link_to "Home", root_path %></li>
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        Sevas <b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu" id="ddd">
 
-            <%   @seva_types.each do |seva_type | %>
-            <li>
-              <%= link_to seva_type&.name, root_path(:seva_type_id => seva_type.id)%></li>
+        <%   @seva_types.each do |seva_type | %>
+        <li>
+          <%= link_to seva_type&.name, root_path(:seva_type_id => seva_type.id)%></li>
 
-            <li class="divider"></li>
-      <%end %>
-          </ul>
-        </li>
-        
-        <% if logged_in? %>
-        <%if current_user&.role?('admin') || current_user&.role?('manager') %>
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Seva <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "Seva List", sevas_path %></li>
-            <li><%= link_to "New Seva",new_seva_path %></li>
-
-          </ul>
-        </li>
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Exception Dates <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "Exception Dates", exception_dates_path %></li>
-            <li><%= link_to "New Exception Date", new_exception_date_path%></li>
-
-          </ul>
-        </li>
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Seva Types <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "Seva Types", seva_types_path %></li>
-            <li><%= link_to "New Seva Type", new_seva_type_path%></li>
-
-          </ul>
-        </li>
-
-
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Gotra <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <li><%= link_to "Gotra List", gotras_path %></li>
-            <li><%= link_to "New Gotra", new_gotra_path %></li>
-
-          </ul>
-        </li>
-        <li><%= link_to "Users", users_path %></li>
-            <li><%= link_to "Report", report_data_path %></li>
-              <li><%= link_to "bookings", bookings_path %></li>
+          <li class="divider"></li>
           <%end %>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              Account <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-              <li><%= link_to "Profile", current_user %></li>
-              <li><%= link_to "Settings", edit_user_path(current_user) %></li>
-                <li><%= link_to "Add Family Members", new_family_member_path %></li>
-                  <li><%= link_to "View Family Members",family_members_path %></li>
-              <li class="divider"></li>
-              <li>
-                <%= link_to "Log out", logout_path, method: :delete %>
-              </li>
-            </ul>
-          </li>
-        <% else %>
-          <li><%= link_to "Log in", login_path %></li>
-        <% end %>
+        </ul>
+      </li>
+
+      <% if logged_in? %>
+      <%if current_user&.role?('admin') || current_user&.role?('manager') %>
+      <li class="dropdown" id="adminMenu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-grid-3x3-gap" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M4 2H2v2h2V2zm1 12v-2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1zm0-5V7a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1zm0-5V2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1zm5 10v-2a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1zm0-5V7a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1zm0-5V2a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1zM9 2H7v2h2V2zm5 0h-2v2h2V2zM4 7H2v2h2V7zm5 0H7v2h2V7zm5 0h-2v2h2V7zM4 12H2v2h2v-2zm5 0H7v2h2v-2zm5 0h-2v2h2v-2zM12 1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zm-1 6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zm1 4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-2z"/>
+        </svg></a>
+        <ul class="dropdown-menu" role="menu">
+          <li><div class="card-group" style="display: flex"><div class="card">
+
+            <div class="card-body">
+              <h5 class="card-title">Seva Management</h5>
+              <div class="card-body">
+                <%= link_to "Seva List", sevas_path %>
+                <%= link_to "New Seva",new_seva_path %>
+
+              </div>
+            </div>
+          </div><div class="card">
+
+            <div class="card-body">
+              <h5 class="card-title">Exception Dates Management</h5>
+              <div class="card-body">
+
+                <%= link_to "Exception Dates", exception_dates_path %>
+                <%= link_to "New Exception Date", new_exception_date_path%>
+
+              </div>
+            </div>
+          </div><div class="card">
+
+            <div class="card-body">
+              <h5 class="card-title">Seva Type Management</h5>
+              <div class="card-body">
+                <%= link_to "Seva Types", seva_types_path %>
+                <%= link_to "New Seva Type", new_seva_type_path%>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+
+            <div class="card-body">
+              <h5 class="card-title">Gotra Management</h5>
+              <div class="card-body">
+                <%= link_to "Gotra List", gotras_path %>
+                <%= link_to "New Gotra", new_gotra_path %>
+              </div>
+            </div>
+          </div><div class="card">
+
+            <div class="card-body">
+              <h5 class="card-title">Dhanya Seva</h5>
+              <div class="card-body">
+                <%= link_to "Dhanya Seva List", dhanya_sevas_url %>
+                <%= link_to "New Dhanya Seva", new_dhanya_seva_path %>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+
+            <div class="card-body">
+              <h5 class="card-title">Gotra Management</h5>
+              <div class="card-body">
+                <%= link_to "Gotra List", gotras_path %>
+                <%= link_to "New Gotra", new_gotra_path %>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+
+            <div class="card-body">
+              <h5 class="card-title">Reports</h5>
+              <div class="card-body">
+                <%= link_to "Seva Report", report_data_path %>
+                <%= link_to "Cook Report", cook_report_data_path %>
+                <%= link_to "Donations", donations_path %>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+
+            <div class="card-body">
+              <h5 class="card-title">Groups</h5>
+              <div class="card-body">
+                <%= link_to "Groups", groups_path %>
+                <%= link_to "New Group", new_group_path %>
+
+              </div>
+            </div>
+          </div>
+          <div class="card">
+
+            <div class="card-body">
+              <h5 class="card-title">Others</h5>
+              <div class="card-body">
+                <%= link_to "bookings", bookings_path %>
+                <%= link_to "Users", users_path %>
+
+
+              </div>
+            </div>
+          </div>
+
+        </div></li>
+
       </ul>
-    </nav>
-  </div>
+    </li>
+
+    <!-- <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    Exception Dates <b class="caret"></b>
+  </a>
+  <ul class="dropdown-menu">
+  <li><%= link_to "Exception Dates", exception_dates_path %></li>
+  <li><%= link_to "New Exception Date", new_exception_date_path%></li>
+
+</ul>
+</li> -->
+
+<!-- <li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+Seva Types <b class="caret"></b>
+</a>
+<ul class="dropdown-menu">
+<li><%= link_to "Seva Types", seva_types_path %></li>
+<li><%= link_to "New Seva Type", new_seva_type_path%></li>
+
+</ul>
+</li> -->
+
+
+<!-- <li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+Gotra <b class="caret"></b>
+</a>
+<ul class="dropdown-menu">
+<li><%= link_to "Gotra List", gotras_path %></li>
+<li><%= link_to "New Gotra", new_gotra_path %></li>
+
+</ul>
+</li> -->
+<!-- <li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+Reports <b class="caret"></b>
+</a>
+<ul class="dropdown-menu">
+<li><%= link_to "Seva Report", report_data_path %></li>
+<li><%= link_to "Cook Report", cook_report_data_path %></li>
+<li><%= link_to "Donations", donations_path %></li>
+</ul>
+</li> -->
+<!-- <li><%= link_to "Users", users_path %></li> -->
+<!--
+<li><%= link_to "bookings", bookings_path %></li> -->
+<%end %>
+<li class="dropdown-left-manual" >
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    Account <b class="caret"></b>
+  </a>
+  <ul class="dropdown-menu" id="ddd">
+    <li><%= link_to "Profile", current_user %></li>
+    <li><%= link_to "Settings", edit_user_path(current_user) %></li>
+    <li><%= link_to "Add Family Members", new_family_member_path %></li>
+    <li><%= link_to "View Family Members",family_members_path %></li>
+    <li class="divider"></li>
+    <li>
+      <%= link_to "Log out", logout_path, method: :delete %>
+    </li>
+  </ul>
+</li>
+<% else %>
+<li><%= link_to "Log in", login_path %></li>
+<% end %>
+</ul>
+</nav>
+
 </header>
+<style>
+#adminMenu {
+  position: static;
+}
+.nav > li.dropdown.open .dropdown-menu {
+  display:table; width: 100%; text-align: center; left:0; right:0;
+}
+.dropdown-menu>li {
+  display: table-cell;
+}
+.card {margin: 1rem;
+  padding: .5rem;
+}
+#ddd li {
+    display: flex;
+}
+.dropdown-left-manual {
+  right: 0;
+  left: auto;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+</style>

@@ -66,7 +66,7 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :email, :password,
-                                   :password_confirmation,:dob,:mobile,:nakshatra,:gotra,:rashi,role_ids:[])
+                                   :password_confirmation,:dob,:mobile,:nakshatra,:gotra,:rashi,role_ids:[],group_ids:[])
     end
 
     # Before filters

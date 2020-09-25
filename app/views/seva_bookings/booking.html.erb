@@ -20,27 +20,29 @@
       </div>
   </div>
   <div id="seva_list_fa">
-<%@family_members.each_with_index do |dv,index|%>
+      <%family_members= @seva.no_of_persons > 0  ? @family_members.first(1): @family_members %>
+
+<%family_members.each_with_index do |dv,index|%>
 <div class="row" >
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 
-      <input type="text" id="visitor_name_<%=index%>" name="beneficiary[]visitor[name]" value="<%=@family_members[index][:name]%>" pattern=[A-Z\sa-z]{3,20} required  list="beneficiary_list"  onchange="myFunction(this.value,this.id)">
+      <input type="text" id="visitor_name_<%=index%>" name="beneficiary[]visitor[name]" value="<%=dv[:name]%>" pattern=[A-Z\sa-z]{3,20} required  list="beneficiary_list"  onchange="myFunction(this.value,this.id)">
 
     </div>
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 
-      <input type="text" id="nakshatra_<%=index%>" name="beneficiary[]visitor[nakshatra]" value="<%=@family_members[index][:nakshatra]%>" placeholder="" required>
+      <input type="text" id="nakshatra_<%=index%>" name="beneficiary[]visitor[nakshatra]" value="<%=dv[:nakshatra]%>" placeholder="" required>
 
     </div>
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 
-      <input type="text" id="gotra_<%=index%>" name="beneficiary[]visitor[gotra]" value="<%=@family_members[index][:gotra]%>" placeholder="" required>
+      <input type="text" id="gotra_<%=index%>" name="beneficiary[]visitor[gotra]" value="<%=dv[:gotra]%>" placeholder="" required>
 
     </div>
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-
+<%unless index == 0%>
       <a href="#" class="delete">x</a>
-
+<%end%>
     </div>
   </div>
 
@@ -49,12 +51,18 @@
 </div>
   </div>
 
-  <%if @seva.seva_type&.group_booking %>
+  <%if @seva.no_of_persons > 0 %>
   <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
     <div class="elem-group inlined">
-      <label for="nakshatra">No of Persons</label>
-      <input type="number" id="no_of_persons" name="no_of_persons" max="<%= @seva.seva_type.maximum_number_per_booking && @seva.seva_type.maximum_number_per_booking > 0 ? @seva.seva_type.maximum_number_per_booking : 1000%>" value="<%= @seva.additional_data['allowed_person_per_booking']&.to_i %>" placeholder="" required>
+      <label for="nakshatra">Additional persons for Tirtha Prasada</label>
+      <input type="number" id="no_of_persons" name="no_of_persons" max="<%= @seva.seva_type.maximum_number_per_booking && @seva.seva_type.maximum_number_per_booking > 0 ? @seva.seva_type.maximum_number_per_booking : 1000%>" value="0" placeholder="" required>
     </div>
+  </div>
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+    <div class="elem-group inlined">
+      <label for="nakshatra">Lunch</label>
+      <input type="checkbox" name="lunch"  checked>
+</div>
   </div>
   <%else%>
   <div class="container2">
@@ -77,7 +85,7 @@
     <br>
   </div>
 </div>
-<%unless @seva.seva_type.group_booking %>
+<%unless @seva.no_of_persons > 0 %>
 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
   <div class="elem-group" style="padding-top: 50px;">
     <label for="checkin-date">OR
@@ -380,7 +388,7 @@ getScheduledData();
 
                         url:'/validate_booking_date?seva_id='+seva_id+'&date='+date+'&type=multiple'+'&count=0',
                         type: 'get',
-                        dataType :'json',
+
                         success: function(data){
 
                         }
@@ -428,7 +436,7 @@ getScheduledData();
                         }
                       }
 
-                      if( date && count >0)
+                      if( date )
                       {
                         $.ajax({
 

@@ -1,0 +1,141 @@
+<%= form_with(model: dhanya_seva, local: true) do |form| %>
+  <% if dhanya_seva.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(dhanya_seva.errors.count, "error") %> prohibited this dhanya_seva from being saved:</h2>
+
+      <ul>
+        <% dhanya_seva.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+      <div class="row">
+  <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name ,:required=>true%>
+    </div>
+  </div>
+</div>
+  <div id="item_list_fa">
+    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+      <div class="elem-group" >
+          <label for="end-date">Item
+        </label>
+      </div>
+        </div>
+        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+          <div class="elem-group"  id="to_date">
+              <label for="end-date">Quantity(KG/Ltr/Gms)
+            </label>
+          </div>
+            </div>
+    <%if form.object&.item  %>
+    <%form.object&.item&.each_with_index do |item, index| %>
+    <div class="row">
+  <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+    <div class="elem-group" id="from_date">
+
+      <input type="string" id="item_0" list="item_list" value="<%=item['item']%>" name="dhanya_seva[item][][item]" required>
+    </div></div>
+    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+      <div class="elem-group"  id="to_date">
+
+        <input type="string" id="quantity_0" value="<%=item['quantity']%>" name="dhanya_seva[item][][quantity]" required>
+      </div></div>
+<%if index ==0 %>
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+  <div >
+    <label  >
+    </label>
+    <button type="button" id="add_item_ee"><span>+ </span></button>
+  </div>
+</div>
+<%else%>
+<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"><a href="#" class="delete">x</a></div>
+<% end %>
+    </div>
+
+          <%end%>
+      <%else%>
+      <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+        <div class="elem-group" id="from_date">
+
+          <input type="string" id="item_0" list="item_list" name="dhanya_seva[item][][item]" required>
+        </div></div>
+        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+          <div class="elem-group"  id="to_date">
+
+            <input type="string" id="quantity_0" name="dhanya_seva[item][][quantity]" required>
+          </div></div>
+          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+      <div >
+        <label  >
+        </label>
+        <button type="button" id="add_item_ee"><span>+ </span></button>
+      </div>
+    </div>
+
+        <%end%>
+
+
+        </div>
+      <div class="row">
+          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+              <%= form.label :total_worth %>
+              <%= form.text_field :total_worth %>
+
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+              <%= form.label :remarks %>
+              <%= form.rich_text_area :remarks %>
+
+          </div>
+        </div>
+        <datalist id="item_list">
+        <% @item_keys.each do |item| %>
+        <option value="<%=item %>"></option>
+        <% end %>
+      </datalist>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+    </div>
+        </div>
+
+<% end %>
+<script>
+
+button = document.getElementById("#add_item_ee")
+
+
+  var wrapper2= $("#item_list_fa");
+
+$('#add_item_ee').click(function(e){
+
+  // e.preventDefault();
+  // if(x < max_fields){
+  var x = 1;
+
+  $(wrapper2).append('<div class="row"><div class="col-xs-5 col-sm-5 col-md-5 col-lg-5"> <input type="text" id="item_' + x+'" name="dhanya_seva[item][][item]"   list="item_list"  required/> </div><div class="col-xs-5 col-sm-5 col-md-5 col-lg-5"><input type="text" id="quantity_' +x+'" name="dhanya_seva[item][][quantity]" required/></div><div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"><a href="#" class="delete">x</a></div>  </div>'); //add input box
+  // }
+  // else
+  // {
+  // alert('You Reached the limits')
+  // }
+x++
+
+});
+$(wrapper2).on("click",".delete", function(e){
+  e.preventDefault();
+
+  $(this).parent('div').parent('div').remove();
+
+
+})
+</script>

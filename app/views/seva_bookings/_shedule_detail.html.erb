@@ -5,9 +5,13 @@
     <thead role="rowgroup">
       <tr role="row">
         <th role="columnheader">Date</th>
-        <th role="columnheader">Rate</th>
+        <th role="columnheader">Amount</th>
             <th role="columnheader">No of Devotee</th>
-  <th role="columnheader">Amount</th>
+            <% if @seva.no_of_persons > 0 %>
+<th role="columnheader">Additional persons for Tirtha Prasada</th>
+<th role="columnheader">Tirtha Prasada Amount/head</th>
+            <%end%>
+  <th role="columnheader">Total Amount</th>
     <th role="columnheader">Remove</th>
       </tr>
     </thead>
@@ -18,15 +22,25 @@
 <tr role="row">
  <td role="cell" > <%=date%></td>
   <td role="cell" > <%=@seva.rate%></td>
-    <td role="cell" > <%=@count%></td>
-   <td role="cell" > <%=amt= @seva.rate*@count %></td>
+    <td role="cell" > <%=session[:defaul_count]%></td>
+    <% if @seva.no_of_persons > 0 %>
+<td role="cell"> <%=session[:tirtha_prasada_count]%></td>
+<td role="cell"> <%=@seva.tirtha_prasada_amount%></td>
+    <%end%>
+    <% if @seva.no_of_persons > 0 %>
+   <td role="cell" >
+     <%=amt= @seva.rate+ (session[:tirtha_prasada_count]*@seva.tirtha_prasada_amount)  %></td>
+     <% else%>
+     <td role="cell" >
+       <%=amt= @seva.rate * session[:defaul_count] %></td>
+       <%end%>
    <% sum+=amt%>
     <td role="cell" > <%= link_to ('<i class="fa fa-trash" aria-hidden="true"></i>').html_safe, remove_booked_date_path(:date => date,:seva_id=>@seva.id,:count=>@count), :method=> :post, :remote=> true%></td>
 </tr>
 <% end%>
 <tr role="row">
- <td role="cell" colspan="3" >Total: </td>
- <td role="cell" colspan="2" > <%=sum%></td>
+ <td role="cell" colspan="<%=@seva.no_of_persons > 0 ? 5 : 3%>" >Total: </td>
+ <td role="cell" colspan="" > <%=sum%></td>
 
 </tr>
 

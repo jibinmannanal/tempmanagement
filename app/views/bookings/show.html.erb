@@ -7,9 +7,12 @@
   <%= wicked_pdf_image_tag('https://tempmanagement.herokuapp.com/headerimage.jpg', height: '200px', width: '100%') %>
 </div>
 
-<p>Receipt No. <b><%=@booking.id%></b></p>
+<br>
 <p style="float: right">Date: <b><%=@booking.created_at.strftime("%m/%d/%Y")%></b></p>
-
+<tr>
+  <th scope="row" colspan="5">Receipt No.</th>
+  <th scope="row" ><b><%=@booking.id%></b></th>
+    </tr>
 <table class="table table-bordered" style="width:100%">
   <thead>
     <tr>
@@ -30,14 +33,14 @@
       <td><%=@booking.seva.name%></td>
       <td><%=devotee["name"]%></td>
       <td><%=devotee["nakshatra"]%></td>
-      <td></td>
+      <td><%=devotee["gotra"]%></td>
         <td><%=@booking.seva.rate%></td>
-          <td></td>
+
     </tr>
 <%end%>
 <tr>
-  <th scope="row" colspan="3">Total</th>
-  <th scope="row" colspan="6"><%=sum%></th>
+  <th scope="row" colspan="5">Total</th>
+  <th scope="row" ><%=sum%></th>
     </tr>
   </tbody>
 </table>

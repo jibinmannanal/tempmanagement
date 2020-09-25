@@ -20,6 +20,7 @@ class BookingsController < ApplicationController
             template: "bookings/show.html.erb",
             layout: "pdf.html",
             orientation: "Landscape",
+             viewport_size: '1280x1024',
             lowquality: true,
             zoom: 1,
             dpi: 75
@@ -50,15 +51,21 @@ class BookingsController < ApplicationController
     end
     if users.length > 0
     @seva =Seva.find(params[:seva_id])
-    rate = @seva.rate * users.length
+    if @seva.no_of_persons > 0
+      rate = @seva.rate+ (session[:tirtha_prasada_count]*@seva.tirtha_prasada_amount)
+    else
+      rate = @seva.rate * session[:defaul_count] * session[:booking_dates].length
+    end
+    # rate = @seva.rate * users.length
     puts session[:booking_dates].inspect
-    puts users.inspect
+    puts session[:tirtha_prasada_count].inspect
+      puts session[:defaul_count].inspect
     if params["seva_booking_type"] == "singleday"
-        puts "999999999999999999999"
-      if ([params["pooja_date"]] == session[:booking_dates])
-      puts "88888888888"
 
-          @booking = current_user.bookings.build(seva_id: params[:seva_id],devote_list: users,booking_type: "Normal",rate: rate ,seva_date: session[:booking_dates])
+      if ([params["pooja_date"]] == session[:booking_dates])
+
+
+          @booking = current_user.bookings.build(seva_id: params[:seva_id],devote_list: users,booking_type: "Normal",rate: rate ,seva_date: session[:booking_dates],tirtha_prasada_amount: session[:tirtha_prasada_count]*@seva.tirtha_prasada_amount,lunch: params[:lunch] ? true : false,tirtha_prasada_count: session[:tirtha_prasada_count]+ @seva.no_of_persons)
           if @booking.save
             session[:booking_dates] = nil
             puts "0000000000000000000000"

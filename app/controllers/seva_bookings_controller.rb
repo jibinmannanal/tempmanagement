@@ -16,8 +16,13 @@ class SevaBookingsController < ApplicationController
     @seva = Seva.find(params[:seva_id])
     date = params[:date]
     @count = params[:count]&.to_i
-    if(@seva.seva_type.group_booking )
-      @count += 2
+    @type = params[:type]
+    if(@seva.no_of_persons > 0 )
+    session[:defaul_count] = @seva.no_of_persons
+    session[:tirtha_prasada_count] = params[:count]&.to_i
+    else
+      session[:defaul_count] = @count
+      session[:tirtha_prasada_count] = 0
     end
     if @seva.event_type == 'regular'
       if @seva.exception_dates&.pluck(:dates)&.flatten&.uniq&.include?(date)
@@ -74,13 +79,39 @@ class SevaBookingsController < ApplicationController
           @valid = false
         end
       end
+  elsif @seva.event_type == 'inbetween'
+    puts date
 
+
+              starts = @seva&.additional_data['from_date'].to_date
+    ends = @seva&.additional_data['to_date']&.to_date
+      dates = Montrose.daily(starts: starts, until: ends).to_a
+      seva_date_list =[]
+      dates&.flatten.each do |datetime|
+        seva_date_list << datetime.strftime("%Y-%m-%d")
+      end
+      puts seva_date_list.inspect
+      if seva_date_list&.include?(date)
+        @valid = true
+      else
+
+        @valid = false
+      end
     end
     if @valid
+
       session[:booking_dates] =[date]
       @selected_days = [date]
     else
+      if(params[:type]=='multiple')
+puts "ffffffffffffffffffffffffffffffffffffffffffffff"
+      else
+
+      session[:booking_dates] =[]
+      session[:defaul_count] = 0
+      session[:tirtha_prasada_count] = 0
       @selected_days = []
+    end
     end
   end
 
@@ -93,6 +124,7 @@ class SevaBookingsController < ApplicationController
       end
     end
     @count = users.count
+    session[:defaul_count] =   @count
     exception_dates = @seva.exception_dates&.pluck(:dates)&.flatten
 
 
@@ -148,10 +180,26 @@ class SevaBookingsController < ApplicationController
 
           end
 
+          elsif @seva.event_type == 'inbetween'
+
+  day_list=[]
+                                starts = @seva&.additional_data['from_date'].to_date
+                      ends = @seva&.additional_data['to_date']&.to_date
+                        dates = Montrose.daily(starts: starts, until: ends).to_a
+                        seva_date_list =[]
+                        dates&.flatten.each do |datetime|
+                          day_list << datetime.strftime("%Y-%m-%d")
+                        end
+
+
           @selected_days  = (day_list & @seva_date_list) -  exception_dates
 
           # render json: {dates: @selected_days }
         end
+
+
+
+
 
 
       else
@@ -198,6 +246,22 @@ class SevaBookingsController < ApplicationController
 
               @selected_days  = (day_list & @seva_date_list) -  exception_dates
 
+            elsif @seva.event_type == 'inbetween'
+
+    day_list=[]
+                                  starts = @seva&.additional_data['from_date'].to_date
+                        ends = @seva&.additional_data['to_date']&.to_date
+                          dates = Montrose.daily(starts: starts, until: ends).to_a
+                          seva_date_list =[]
+                          dates&.flatten.each do |datetime|
+                            day_list << datetime.strftime("%Y-%m-%d")
+                          end
+
+
+            @selected_days  = (day_list & @seva_date_list) -  exception_dates
+
+            # render json: {dates: @selected_days }
+
       else
 
         @selected_days  =[]
@@ -233,7 +297,25 @@ class SevaBookingsController < ApplicationController
 
           @datas =  Booking.where("seva_date ?| array[:values]",values: date).group_by(&:seva_id)
         end
+        def cook_report_data
 
+
+          date = Time.now.strftime("%Y-%m-%d")
+
+          @datas = Booking.where("seva_date ?| array[:values]",values: date).where("tirtha_prasada_count >=? AND lunch=?",1,true).group_by(&:seva_id)
+          @tirtha_prasada_count_sum = Booking.where("seva_date ?| array[:values]",values: date).where("tirtha_prasada_count >=? AND lunch=?",1,true).sum(:tirtha_prasada_count)
+        end
+
+        def cook_report_data_js
+
+
+                  date = params[:date]
+
+                    @datas = Booking.where("seva_date ?| array[:values]",values: date).where("tirtha_prasada_count >=? AND lunch=?",1,true).group_by(&:seva_id)
+
+          @tirtha_prasada_count_sum = Booking.where("seva_date ?| array[:values]",values: date).where("tirtha_prasada_count >=? AND lunch=?",1,true).sum(:tirtha_prasada_count)
+          puts @sum.inspect
+        end
         def report_data_js
 
           date = params[:date]

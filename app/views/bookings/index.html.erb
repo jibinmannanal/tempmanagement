@@ -2,7 +2,7 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Bookings</h1>
-no,name,gotra,nakshtra,seva name ,no of persons if applicabile, amount ,
+
 <table role="table" class="table">
   <thead role="rowgroup">
     <tr role="row">
@@ -21,7 +21,8 @@ no,name,gotra,nakshtra,seva name ,no of persons if applicabile, amount ,
           <th role="columnheader">No. of Devotees</th>
 
       <th role="columnheader">Amount</th>
-
+      <th role="columnheader">Prasada Count</th>
+            <th role="columnheader">Lynch</th>
   <th role="columnheader">Print</th>
     </tr>
   </thead>
@@ -58,6 +59,8 @@ no,name,gotra,nakshtra,seva name ,no of persons if applicabile, amount ,
  <td role="cell" data-title="Rate"><%=booking.seva.rate%></td>
   <td role="cell" data-title="count"><%=booking.devote_list.length%></td>
  <td role="cell" data-title="Username"><%= booking.rate %></td>
+ <td role="cell" data-title="count"><%=booking.tirtha_prasada_count%></td>
+<td role="cell" data-title="Username"><%= booking.lunch ? 'Yes' : 'No' %></td>
 <td role="cell" ><%= link_to 'Print',booking_path(booking, :format => 'pdf'),  target: :_blank%></td>
 </tr>
 <%end%>

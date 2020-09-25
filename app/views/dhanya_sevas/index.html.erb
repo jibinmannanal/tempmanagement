@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Dhanya Sevas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Total Worth</th>
+      <th>Remarks</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @dhanya_sevas.each do |dhanya_seva| %>
+      <tr>
+        <td><%= dhanya_seva.name %></td>
+        <td><%= dhanya_seva.total_worth%></td>
+<td><%= dhanya_seva.remarks%></td>
+        <td><%= link_to 'Edit', edit_dhanya_seva_path(dhanya_seva) %></td>
+        <td><%= link_to 'Delete', dhanya_seva, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Dhanya Seva', new_dhanya_seva_path %>

@@ -1,4 +1,9 @@
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
 
+@include make-grid(sm);
+@include make-grid(md);
+@include make-grid(lg);
 body {
 
   font-family: sans-serif;

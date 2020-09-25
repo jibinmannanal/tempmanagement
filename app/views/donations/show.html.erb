@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @donation.name %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @donation.address %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @donation.amount %>
+</p>
+
+<p>
+  <strong>Received by:</strong>
+  <%= @donation.received_by %>
+</p>
+
+<p>
+  <strong>Purpose:</strong>
+  <%= @donation.purpose %>
+</p>
+
+<p>
+  <strong>Payment type:</strong>
+  <%= @donation.payment_type %>
+</p>
+
+<p>
+  <strong>Payment method:</strong>
+  <%= @donation.payment_method %>
+</p>
+
+<p>
+  <strong>Check no:</strong>
+  <%= @donation.check_no %>
+</p>
+
+<p>
+  <strong>Check expiry date:</strong>
+  <%= @donation.check_expiry_date %>
+</p>
+
+<p>
+  <strong>Transaction:</strong>
+  <%= @donation.transaction_id %>
+</p>
+
+<%= link_to 'Edit', edit_donation_path(@donation) %> |
+<%= link_to 'Back', donations_path %>
