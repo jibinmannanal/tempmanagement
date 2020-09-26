@@ -7,6 +7,9 @@
     <input type="hidden" id="sevaId" name="seva_id" value="<%=@seva.id%>">
     <input type="hidden" id="sevaScheduleType" name="seva_booking_type" value="singleday">
 <div class="row">
+  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+
+</div>
   <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
       <label for="visitor_name">Name</label>
 
@@ -24,26 +27,29 @@
 
 <%family_members.each_with_index do |dv,index|%>
 <div class="row" >
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+  <input type="checkbox" id="visitor_check_<%=index%>"  onchange="clearScheduledData()" name="beneficiary[]visitor[option]" value="<%=index%>" checked/>
+</div>
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 
-      <input type="text" id="visitor_name_<%=index%>" name="beneficiary[]visitor[name]" value="<%=dv[:name]%>" pattern=[A-Z\sa-z]{3,20} required  list="beneficiary_list"  onchange="myFunction(this.value,this.id)">
+      <input type="text" id="visitor_name_<%=index%>" name="beneficiary[]visitor[name]" value="<%=dv[:name]%>" pattern=[A-Z\sa-z]{3,20}   list="beneficiary_list"  onchange="myFunction(this.value,this.id)">
 
     </div>
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 
-      <input type="text" id="nakshatra_<%=index%>" name="beneficiary[]visitor[nakshatra]" value="<%=dv[:nakshatra]%>" placeholder="" required>
+      <input type="text" id="nakshatra_<%=index%>" name="beneficiary[]visitor[nakshatra]" value="<%=dv[:nakshatra]%>" placeholder="" >
 
     </div>
     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 
-      <input type="text" id="gotra_<%=index%>" name="beneficiary[]visitor[gotra]" value="<%=dv[:gotra]%>" placeholder="" required>
+      <input type="text" id="gotra_<%=index%>" name="beneficiary[]visitor[gotra]" value="<%=dv[:gotra]%>" placeholder="" >
 
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+    <!-- <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 <%unless index == 0%>
       <a href="#" class="delete">x</a>
 <%end%>
-    </div>
+    </div> -->
   </div>
 
 <%end%>
@@ -203,7 +209,7 @@
                       var name_id = "visitor_name_"+x;
                       var nakshatra_id = "nakshatra_"+x;
                       var gotra_id = "nakshatra_"+x;
-                      $(wrapper2).append('<div class="row"><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"> <input type="text" id="visitor_name_' + x+'" name="beneficiary[]visitor[name]" list="beneficiary_list"  onchange="myFunction(this.value,this.id)" required/> </div><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><input type="text" id="nakshatra_' +x+'" name="beneficiary[]visitor[nakshatra]" required/></div><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><input type="text" id="gotra_' +x+'" name="beneficiary[]visitor[gotra]" required/></div><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><a href="#" class="delete">x</a></div>  </div>'); //add input box
+                      $(wrapper2).append('<div class="row"><div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">  <input type="checkbox" name="beneficiary[]visitor[option]"  onchange="clearScheduledData()" value='+x+' id="visitor_check_' +x+'" checked/></div><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"> <input type="text" id="visitor_name_' + x+'" name="beneficiary[]visitor[name]" list="beneficiary_list"  onchange="myFunction(this.value,this.id)" /> </div><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><input type="text" id="nakshatra_' +x+'" name="beneficiary[]visitor[nakshatra]" /></div><div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><input type="text" id="gotra_' +x+'" name="beneficiary[]visitor[gotra]" /></div>  </div>'); //add input box
                       // }
                       // else
                       // {
@@ -420,6 +426,16 @@ getScheduledData();
                       // $('#seva_date_detail').show()
                       var date = $('#checkin-date').val();
                       var seva_id = <%=@seva.id%>
+                      var checkboxes = document.getElementsByName('beneficiary[]visitor[option]');
+
+var vals = []
+for (var i=0, n=checkboxes.length;i<n;i++)
+{
+if (checkboxes[i].checked)
+{
+vals.push(checkboxes[i].value);
+}
+}
                       var input = document.getElementsByName('beneficiary[]visitor[name]');
                       var count = 0
 
@@ -428,15 +444,18 @@ getScheduledData();
                       }else{
                         for (var i = 0; i < input.length; i++) {
                           var a = input[i];
+var check_id = a.id.replace('name','check')
+var check_value = $("#"+check_id).val()
 
-                          if(a.value)
+                          if(a.value && vals.includes(check_value))
                           {
+
                             count+=1
                           }
                         }
                       }
 
-                      if( date )
+                      if( date && count > 0)
                       {
                         $.ajax({
 
@@ -452,6 +471,9 @@ getScheduledData();
 
                           }
                         });
+                      }
+                      else{
+                          $('#schedule_error').show()
                       }
                     }
 

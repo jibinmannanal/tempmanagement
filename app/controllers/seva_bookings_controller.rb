@@ -119,7 +119,9 @@ puts "ffffffffffffffffffffffffffffffffffffffffffffff"
     @seva=Seva.find(params[:seva_id])
     users=[]
     params["beneficiary"].each do |devotee|
-      if(devotee["visitor"]["name"].present?)
+      if(devotee["visitor"]["name"].present?  && devotee["visitor"]["option"])
+        puts devotee
+        puts "ppppppppppppppppppppppppppppppppppppp"
         users << devotee["visitor"]
       end
     end

@@ -45,7 +45,7 @@ class BookingsController < ApplicationController
     users=[]
 
     params["beneficiary"].each do |devotee|
-      if(devotee["visitor"]["name"].present?)
+      if(devotee["visitor"]["name"].present? && devotee["visitor"]["option"])
         users << devotee["visitor"]
       end
     end
