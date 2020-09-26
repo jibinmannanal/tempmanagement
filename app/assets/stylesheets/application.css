@@ -32,9 +32,10 @@
   font-weight: 100;
  }
  .navbar-inverse .navbar-nav > li > a {
-     color: #020202;
+     color:rgb(88, 102, 217);
  }
  .navbar-inverse {
-    background-color: #FF5733;
+    background-color: rgb(252, 192, 142);
+    border-color: rgb(246, 75, 97);
 
 }
