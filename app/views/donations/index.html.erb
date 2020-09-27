@@ -6,6 +6,8 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Phone</th>
+      <th>Email</th>
       <th>Address</th>
       <th>Amount</th>
       <th>Received by</th>
@@ -14,7 +16,8 @@
       <th>Payment method</th>
       <th>Check no</th>
       <th>Check expiry date</th>
-      <th>Transaction</th>
+      <th>Transaction Id</th>
+          <th>Remarks</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -23,6 +26,8 @@
     <% @donations.each do |donation| %>
       <tr>
         <td><%= donation.name %></td>
+        <td><%= donation.phone %></td>
+        <td><%= donation.email %></td>
         <td><%= donation.address %></td>
         <td><%= donation.amount %></td>
         <td><%= donation.received_by %></td>
@@ -32,6 +37,7 @@
         <td><%= donation.check_no %></td>
         <td><%= donation.check_expiry_date %></td>
         <td><%= donation.transaction_id %></td>
+          <td><%= donation.remarks %></td>
         <td><%= link_to 'Show', donation %></td>
         <td><%= link_to 'Edit', edit_donation_path(donation) %></td>
         <td><%= link_to 'Destroy', donation, method: :delete, data: { confirm: 'Are you sure?' } %></td>

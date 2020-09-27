@@ -1,68 +1,78 @@
 <% provide(:title, 'Sign up') %>
 <h1>Sign up</h1>
-
+  <div class="container-fluid">
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= form_with(model: @user, local: true) do |f| %>
-      <%= render 'shared/error_messages', object: f.object %>
 
-      <%= f.label :name %>
-      <%= f.text_field :name, class: 'form-control' ,:required => true %>
-
-      <%= f.label :email %>
-      <%= f.email_field :email, class: 'form-control' ,:required => true %>
-      <%= f.label :mobile %><br />
-        <%= f.text_field :mobile,  class: "form-control" ,:required => true %>
-      <%= f.label "Nakshatra" %>
-      <%= f.select(:nakshatra, options_for_select(NAKSHATRA_LIST.keys), {}, {class: "form-control"}) %>
-
-
-      <%= f.label :gotra %><br />
-      <%= f.select(:gotra,   options_for_select(Gotra.order("name").collect{ |u| [u.name, u.name] }), {}, {class: "form-control"}) %>
-      <%= f.label "Rashi" %>
-      <%= f.select(:rashi, options_for_select(NAKSHATRA_LIST["Aarudra"]), {}, {class: "form-control"}) %>
-
-
-<p id="password_error" style="color: red; display:none">Password is too short (minimum is 6 characters)</p>
-      <%= f.label :password %>
-      <%= f.password_field :password, class: 'form-control' ,:required => true%>
-
-      <%= f.label :password_confirmation, "Confirmation" %>
-      <%= f.password_field :password_confirmation, class: 'form-control' ,:required => true%>
-
-      <%= f.submit "Create my account", class: "btn btn-primary" %>
-    <% end %>
+  <%= form_with(model: @user, local: true) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <%= f.label :name %>
+    <%= f.text_field :name, class: 'form-control' ,:required => true %>
   </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <%= f.label :email %>
+    <%= f.email_field :email, class: 'form-control' ,:required => true %>
+  </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <%= f.label :mobile %><br />
+    <%= f.text_field :mobile,  class: "form-control" ,:required => true %>
+  </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <%= f.label "Nakshatra" %>
+    <%= f.select(:nakshatra, options_for_select(NAKSHATRA_LIST.keys), {}, {class: "form-control"}) %>
+  </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+    <%= f.label :gotra %><br />
+    <%= f.select(:gotra,   options_for_select(Gotra.order("name").collect{ |u| [u.name, u.name] }), {}, {class: "form-control"}) %>
+  </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <%= f.label "Rashi" %>
+    <%= f.select(:rashi, options_for_select(NAKSHATRA_LIST["Aarudra"]), {}, {class: "form-control"}) %>
+  </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+    <p id="password_error" style="color: red; display:none">Password is too short (minimum is 6 characters)</p>
+    <%= f.label :password %>
+    <%= f.password_field :password, class: 'form-control' ,:required => true%>
+  </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <%= f.label :password_confirmation, "Confirmation" %>
+    <%= f.password_field :password_confirmation, class: 'form-control' ,:required => true%>
+  </div>
+  <%= f.submit "Create my account", class: "btn btn-primary" %>
+  <% end %>
+</div>  
 </div>
 <script>
 $('#user_nakshatra').on('change', function (e) {
   var nakshatra = $(this).val();
 
-var option_values = "<%=NAKSHATRA_LIST.to_json%>"
-var values = option_values.replace(/&quot;/g,'"')
-var data = JSON.parse(values)
+  var option_values = "<%=NAKSHATRA_LIST.to_json%>"
+  var values = option_values.replace(/&quot;/g,'"')
+  var data = JSON.parse(values)
 
-      $('#user_rashi').find('option')
-      .remove()
+  $('#user_rashi').find('option')
+  .remove()
 
-      for(var i = 0; i < data[nakshatra].length; i++) {
+  for(var i = 0; i < data[nakshatra].length; i++) {
 
 
-        $('#user_rashi').append('<option value="'+data[nakshatra][i]+'">'+data[nakshatra][i]+'</option>');
+    $('#user_rashi').append('<option value="'+data[nakshatra][i]+'">'+data[nakshatra][i]+'</option>');
 
-      }
+  }
 
 
 })
 $('#user_password').on('change', function (e) {
 
-    var password = $(this).val();
-    if(password.length < 6)
-    {
-      $('#password_error').show();
-    }
-    else{
-      $('#password_error').hide();
-    }
-  })
+  var password = $(this).val();
+  if(password.length < 6)
+  {
+    $('#password_error').show();
+  }
+  else{
+    $('#password_error').hide();
+  }
+})
 </script>

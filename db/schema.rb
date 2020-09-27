@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_04_145117) do
+ActiveRecord::Schema.define(version: 2020_09_27_023449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,38 @@ ActiveRecord::Schema.define(version: 2020_09_04_145117) do
     t.jsonb "seva_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "tirtha_prasada_amount"
+    t.boolean "lunch"
+    t.integer "tirtha_prasada_count"
+  end
+
+  create_table "dhanya_sevas", force: :cascade do |t|
+    t.jsonb "item"
+    t.text "remarks"
+    t.string "total_worth"
+    t.string "name"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "donations", force: :cascade do |t|
+    t.string "name"
+    t.text "address"
+    t.float "amount"
+    t.integer "user_id"
+    t.string "purpose"
+    t.string "payment_type"
+    t.string "payment_method"
+    t.string "check_no"
+    t.date "check_expiry_date"
+    t.string "transaction_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "email"
+    t.string "phone"
+    t.text "remarks"
+    t.string "received_by"
   end
 
   create_table "event_types", force: :cascade do |t|
@@ -92,6 +124,17 @@ ActiveRecord::Schema.define(version: 2020_09_04_145117) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "groups_users", id: false, force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.bigint "user_id", null: false
   end
 
   create_table "microposts", force: :cascade do |t|
@@ -150,6 +193,8 @@ ActiveRecord::Schema.define(version: 2020_09_04_145117) do
     t.string "seva_type_id"
     t.string "event_type"
     t.jsonb "additional_data"
+    t.integer "no_of_persons", default: 0, null: false
+    t.integer "tirtha_prasada_amount", default: 0, null: false
   end
 
   create_table "users", force: :cascade do |t|

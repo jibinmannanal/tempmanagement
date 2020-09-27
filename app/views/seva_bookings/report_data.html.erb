@@ -16,9 +16,10 @@
       <tr>
         <th>Seva Name</th>
         <th>Count</th>
-  <th>Amount</th>
-          <!-- <th>Devotee Count</th>
-          <th>Amount</th> -->
+
+          <th>Devotee Count</th>
+            <th>Amount</th>
+
       </tr>
     </thead>
 
@@ -28,8 +29,10 @@
 
         <tr>
           <td><%= value[0].seva.name %></td>
+        
           <td><%= value.count%></td>
-          <td><%= value.count%></td>
+            <td><%= value&.pluck(:devote_list)&.flatten&.count%></td>
+          <td><%= value&.pluck(:rate)&.sum%></td>
               </tr>
       <% end %>
     </tbody>

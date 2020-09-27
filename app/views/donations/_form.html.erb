@@ -10,58 +10,110 @@
       </ul>
     </div>
   <% end %>
+  <div class="container-fluid">
+    <div class="row">
 
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
   <div class="field">
     <%= form.label :name %>
     <%= form.text_field :name %>
   </div>
-
+  </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <div class="field">
+      <%= form.label :email %>
+      <%= form.text_field :email %>
+    </div>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <div class="field">
+        <%= form.label :phone %>
+        <%= form.text_field :phone %>
+      </div>
+      </div>
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
   <div class="field">
     <%= form.label :address %>
-    <%= form.text_area :address %>
+    <%= form.rich_text_area :address %>
   </div>
-
+    </div>
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
   <div class="field">
     <%= form.label :amount %>
     <%= form.text_field :amount %>
   </div>
-
+    </div>
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
   <div class="field">
     <%= form.label :received_by %>
     <%= form.text_field :received_by %>
   </div>
-
+    </div>
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
   <div class="field">
     <%= form.label :purpose %>
     <%= form.text_field :purpose %>
   </div>
-
+    </div>
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
   <div class="field">
     <%= form.label :payment_type %>
     <%= form.text_field :payment_type %>
   </div>
-
+    </div>
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
   <div class="field">
     <%= form.label :payment_method %>
     <%= form.text_field :payment_method %>
   </div>
-
+    </div>
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
   <div class="field">
     <%= form.label :check_no %>
     <%= form.text_field :check_no %>
   </div>
-
+    </div>
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
   <div class="field">
     <%= form.label :check_expiry_date %>
     <%= form.date_select :check_expiry_date %>
   </div>
-
+    </div>
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
   <div class="field">
-    <%= form.label :transaction_id %>
+     <label for="donation_transaction_id">Transaction Id</label>
     <%= form.text_field :transaction_id %>
   </div>
+  </div>
 
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <div class="field">
+        <%= form.label :remarks %>
+        <%= form.rich_text_area :remarks %>
+      </div>
+        </div>
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
+<%donations =Donation.all%>
+<datalist id="donation_received_by">
+<%donations.all&.pluck(:received_by)&.each do |person| %>
+<option value="<%= person %>"></option>
+<% end %>
+</datalist>
+<datalist id="donation_purpose">
+<%donations.all&.pluck(:purpose)&.each do |person| %>
+<option value="<%= person %>"></option>
+<% end %>
+</datalist>
+<datalist id="donation_payment_type">
+<%donations.all&.pluck(:payment_type)&.each do |person| %>
+<option value="<%= person %>"></option>
+<% end %>
+</datalist>
+<datalist id="donation_payment_method">
+<%donations.all&.pluck(:payment_method)&.each do |person| %>
+<option value="<%= person %>"></option>
+<% end %>
+</datalist>

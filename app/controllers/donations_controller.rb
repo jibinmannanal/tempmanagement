@@ -28,7 +28,8 @@ class DonationsController < ApplicationController
 
     respond_to do |format|
       if @donation.save
-        format.html { redirect_to @donation, notice: 'Donation was successfully created.' }
+          flash[:success] = 'Donation was successfully created.'
+        format.html { redirect_to donations_url }
         format.json { render :show, status: :created, location: @donation }
       else
         format.html { render :new }
@@ -42,7 +43,8 @@ class DonationsController < ApplicationController
   def update
     respond_to do |format|
       if @donation.update(donation_params)
-        format.html { redirect_to @donation, notice: 'Donation was successfully updated.' }
+          flash[:success] = 'Donation was successfully created.'
+        format.html { redirect_to donations_url}
         format.json { render :show, status: :ok, location: @donation }
       else
         format.html { render :edit }
@@ -69,6 +71,6 @@ class DonationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def donation_params
-      params.require(:donation).permit(:name, :address, :amount, :received_by, :purpose, :payment_type, :payment_method, :check_no, :check_expiry_date, :transaction_id)
+      params.require(:donation).permit(:name, :address, :amount, :received_by, :purpose, :payment_type, :payment_method, :check_no, :check_expiry_date, :transaction_id,:phone,:email,:remarks)
     end
 end
